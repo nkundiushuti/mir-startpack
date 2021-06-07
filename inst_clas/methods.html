@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Instrument sample classification &#8212; Music Information Retrieval Starting Pack</title>
+    <title>Methods &#8212; Music Information Retrieval Starting Pack</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -51,8 +51,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Methods" href="methods.html" />
-    <link rel="prev" title="Music Information Retrieval Starting Pack" href="../home.html" />
+    <link rel="next" title="bibliography" href="../bibliography.html" />
+    <link rel="prev" title="Instrument sample classification" href="intro.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -93,13 +93,13 @@
  </span>
 </p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
    Instrument sample classification
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="methods.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    Methods
   </a>
  </li>
@@ -156,7 +156,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/inst_clas/intro.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/inst_clas/methods.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -176,7 +176,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/nkundiushuti/mir-startpack/issues/new?title=Issue%20on%20page%20%2Finst_clas/intro.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/nkundiushuti/mir-startpack/issues/new?title=Issue%20on%20page%20%2Finst_clas/methods.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -197,6 +197,36 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#feature-extractor-approach">
+   Feature extractor approach
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#end-to-end-approach">
+   End-to-end approach
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#figure-images-path-png">
+   &lt;!– ```{figure} ../../images/path.png
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#alt-description-name-name-scale-35">
+   alt: description
+name: name
+scale: 35%
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -205,8 +235,34 @@
         
               <div>
                 
-  <div class="section" id="instrument-sample-classification">
-<h1>Instrument sample classification<a class="headerlink" href="#instrument-sample-classification" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="methods">
+<h1>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h1>
+<p>Building large sound libraries of instrument samples such as the ones used by music makers or producers may require labelling the sounds with the corresponding instrument labels.
+Musical instrument recognition or classification <span id="id1">[<a class="reference internal" href="../bibliography.html#id2"><span>EK00</span></a>]</span> is a Music Information Retrieval (MIR) task that aims at classification of audio signals into instrument-related classes.</p>
+<p>This task becomes more complex if the samples contain multiple instruments <span id="id2">[<a class="reference internal" href="../bibliography.html#id3"><span>BJFH12</span></a>]</span> or if we are asked to locate the time frames where an instrument is active within a longer time span <span id="id3">[<a class="reference internal" href="../bibliography.html#id4"><span>SchluterG15</span></a>]</span>.</p>
+<div class="section" id="feature-extractor-approach">
+<span id="methods-feature-extractor"></span><h2>Feature extractor approach<a class="headerlink" href="#feature-extractor-approach" title="Permalink to this headline">¶</a></h2>
+<p>Traditionally, MIR systems include a part of feature extraction followed up by a classification part. For instrument classification, timbre-related features, time-frequency representations, such as MFCCs, are extracted from audio signals <span id="id4">[<a class="reference internal" href="../bibliography.html#id5"><span>HBPD03</span></a>]</span>.
+The features are then used as input to train an off-the-shelf machine learning classifier which predicts the most likely class for each training sample.</p>
+</div>
+<div class="section" id="end-to-end-approach">
+<span id="methods-end-to-end"></span><h2>End-to-end approach<a class="headerlink" href="#end-to-end-approach" title="Permalink to this headline">¶</a></h2>
+<p>The rise of deep learning has seen also a paradigm shift in MIR. End-to-end approaches using as input the audio signals or time-frequency representations outperformed the feature engineering approaches <span id="id5">[<a class="reference internal" href="../bibliography.html#id6"><span>SP19</span></a>]</span>.</p>
+<p>In terms of machine learning approaches, neural networks architectures designed for audio and music signals replaced the off-the-shelf machine learning methods. These architectures are designed to take as input either the audio signal, spectrograms computed from the audio, the MFCCs or representations learned from the audio.</p>
+</div>
+<div class="section" id="figure-images-path-png">
+<h2>&lt;!– ```{figure} ../../images/path.png<a class="headerlink" href="#figure-images-path-png" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="alt-description-name-name-scale-35">
+<h2>alt: description
+name: name
+scale: 35%<a class="headerlink" href="#alt-description-name-name-scale-35" title="Permalink to this headline">¶</a></h2>
+<p>Title</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="n">means</span><span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">en</span><span class="o">.</span><span class="n">wikipedia</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">wiki</span><span class="o">/</span><span class="n">K</span><span class="o">-</span><span class="n">means_clustering</span><span class="p">)</span> <span class="o">--&gt;</span>
+</pre></div>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -234,8 +290,8 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="../home.html" title="previous page">Music Information Retrieval Starting Pack</a>
-    <a class='right-next' id="next-link" href="methods.html" title="next page">Methods</a>
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">Instrument sample classification</a>
+    <a class='right-next' id="next-link" href="../bibliography.html" title="next page">bibliography</a>
 
         </div>
         
