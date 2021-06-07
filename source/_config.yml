@@ -1,0 +1,31 @@
+# Book settings
+title: Music Information Retrieval Starting Pack
+author: Marius Miron, Genis Plaja, Pedro Ramoneda, Xavier Serra
+#logo: logo.png
+
+latex:
+  latex_documents:
+    targetname: book.tex
+
+repository:
+  url          : https://github.com/nkundiushuti/mir-startpack
+  path_to_book : source
+  branch       : master
+
+launch_buttons:
+  notebook_interface: "classic"
+  colab_url: "https://colab.research.google.com"
+  thebe: true
+  binderhub_url: "https://mybinder.org"
+
+execute:
+  allow_errors: true
+  execute_notebooks: auto
+  timeout: 500
+
+html:
+  use_repository_button: true
+  use_issues_button: true
+
+bibtex_bibfiles:
+  - references.bib

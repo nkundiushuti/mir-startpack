@@ -1,0 +1,10 @@
+- file: home
+
+- part: Instrument classification
+  chapters:
+    - file: inst_clas/intro
+    - file: inst_clas/methods
+
+- part: Resources
+  chapters:
+    - file: bibliography

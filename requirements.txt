@@ -1,0 +1,9 @@
+essentia
+mirdata
+numpy
+sklearn
+matplotlib
+jupyter-book
+jupyterlab
+numpydoc
+pyyaml
