@@ -1,0 +1,594 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Mridangam Stroke Dataset &#8212; Music Information Retrieval Starting Pack</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bibliography" href="../bibliography.html" />
+    <link rel="prev" title="Methods" href="methods.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/mtg_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Music Information Retrieval Starting Pack</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../home.html">
+   Music Information Retrieval Starting Pack
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Instrument classification
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Instrument sample classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="methods.html">
+   Methods
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   The Mridangam Stroke Dataset
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Resources
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/inst_clas/Mridangam_dataset.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/nkundiushuti/mir-startpack"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/nkundiushuti/mir-startpack/issues/new?title=Issue%20on%20page%20%2Finst_clas/Mridangam_dataset.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/nkundiushuti/mir-startpack/master?urlpath=tree/source/inst_clas/Mridangam_dataset.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/nkundiushuti/mir-startpack/blob/master/source/inst_clas/Mridangam_dataset.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#instalation-of-packages">
+   Instalation of packages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dataset-description">
+   Dataset description
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-downloading-validation">
+     Data downloading, validation
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="the-mridangam-stroke-dataset">
+<h1>The Mridangam Stroke Dataset<a class="headerlink" href="#the-mridangam-stroke-dataset" title="Permalink to this headline">¶</a></h1>
+<p>The MTG proposes a few <a class="reference external" href="https://www.upf.edu/web/mtg/software-datasets">datasets</a> that may be used for the instrument classification task:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.upf.edu/web/mtg/irmas">IRMAS</a> - containing annotated samples of multiple instruments</p></li>
+<li><p><a class="reference external" href="https://www.upf.edu/web/mtg/good-sounds">Good Sounds</a> - containing monophonic sounds (notes and scales) for various instruments</p></li>
+<li><p><a class="reference external" href="https://compmusic.upf.edu/mridangam-stroke-dataset">Mridangam Stroke</a> containing isolated drum strokes and the annotated tonic</p></li>
+</ul>
+<p>All these datasets may be downloaded from zenodo. In addition, these datasets may be loaded and validated with easy using the <a class="reference external" href="https://github.com/mir-dataset-loaders/mirdata">mirdata</a> library.</p>
+<p>For educational purposes, we will work with the Mridangam Stroke dataset.</p>
+<div class="section" id="instalation-of-packages">
+<h2>Instalation of packages<a class="headerlink" href="#instalation-of-packages" title="Permalink to this headline">¶</a></h2>
+<p>To download, validate, and load the data we use the mirdata library.
+We use MTG’s <a class="reference external" href="https://essentia.upf.edu">essentia</a> for audio loading and feature computation. Matplotlib’s pyplot is used for plotting and pandas for data stats.
+We install these libraries through PyPI.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%capture
+#If not installed, install Essentia. 
+# This cell is for running the notebook in Colab
+import importlib.util
+if importlib.util.find_spec(&#39;essentia&#39;) is None:
+    !pip install essentia
+
+!pip install git+https://github.com/mir-dataset-loaders/mirdata.git
+!pip install pandas
+!pip install matplotlib
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Basic imports</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Imports to support MIR</span>
+<span class="kn">import</span> <span class="nn">mirdata</span>
+<span class="kn">import</span> <span class="nn">essentia.standard</span> <span class="k">as</span> <span class="nn">ess</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="dataset-description">
+<h2>Dataset description<a class="headerlink" href="#dataset-description" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-downloading-validation">
+<h3>Data downloading, validation<a class="headerlink" href="#data-downloading-validation" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Import Mridangam Stroke Dataset</span>
+<span class="n">mridangam_stroke</span> <span class="o">=</span> <span class="n">mirdata</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s1">&#39;mridangam_stroke&#39;</span><span class="p">)</span>
+
+<span class="c1">#This cell downloads and validates the mridangam dataset</span>
+<span class="n">mridangam_stroke</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>  <span class="c1"># download the dataset</span>
+<span class="n">mridangam_stroke</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>  <span class="c1"># validate that all the expected files are there</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Downloading [&#39;remote_data&#39;] to /Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: [remote_data] downloading mridangam_stroke_1.5.zip
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: /Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5.zip already exists and will not be downloaded. Rerun with force_overwrite=True to delete this file and force the download.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/6976 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  4%|▍         | 302/6976 [00:00&lt;00:02, 3014.33it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  9%|▉         | 655/6976 [00:00&lt;00:01, 3311.36it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 14%|█▍        | 987/6976 [00:00&lt;00:01, 3160.63it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 20%|█▉        | 1371/6976 [00:00&lt;00:01, 3420.66it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 26%|██▌       | 1794/6976 [00:00&lt;00:01, 3704.86it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 32%|███▏      | 2252/6976 [00:00&lt;00:01, 3996.55it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 38%|███▊      | 2653/6976 [00:00&lt;00:01, 3980.10it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 45%|████▍     | 3138/6976 [00:00&lt;00:00, 4252.62it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 51%|█████▏    | 3579/6976 [00:00&lt;00:00, 4299.50it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 58%|█████▊    | 4034/6976 [00:01&lt;00:00, 4375.30it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 64%|██████▍   | 4478/6976 [00:01&lt;00:00, 4394.30it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 70%|███████   | 4918/6976 [00:01&lt;00:00, 3957.97it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 76%|███████▋  | 5323/6976 [00:01&lt;00:00, 3978.64it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 82%|████████▏ | 5727/6976 [00:01&lt;00:00, 3922.64it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 88%|████████▊ | 6124/6976 [00:01&lt;00:00, 3813.63it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 94%|█████████▎| 6532/6976 [00:01&lt;00:00, 3885.06it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 99%|█████████▉| 6924/6976 [00:01&lt;00:00, 3894.92it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 6976/6976 [00:01&lt;00:00, 3908.80it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Success: the dataset is complete and all files are valid.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: --------------------
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>({&#39;tracks&#39;: {}}, {&#39;tracks&#39;: {}})
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the mirdata library the track ids in the dataset can be seen retrieved using the <em>track_ids</em> attribute. The <em>load_tracks</em> methods loads all the tracks in a dictionary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mridangam_ids</span> <span class="o">=</span> <span class="n">mridangam_stroke</span><span class="o">.</span><span class="n">track_ids</span>  <span class="c1"># Load Mridangam IDs</span>
+<span class="n">mridangam_data</span> <span class="o">=</span> <span class="n">mridangam_stroke</span><span class="o">.</span><span class="n">load_tracks</span><span class="p">()</span>  <span class="c1"># Load Mridangam data</span>
+
+<span class="n">mridangam_data</span><span class="p">[</span><span class="n">mridangam_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>  <span class="c1"># Visualize a single track</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Track(
+  audio_path=&quot;...mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224030__akshaylaya__bheem-b-001.wav&quot;,
+  stroke_name=&quot;bheem&quot;,
+  tonic=&quot;B&quot;,
+  track_id=&quot;224030&quot;,
+  audio: The track&#39;s audio
+
+        Returns,
+)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get complete list of different strokes</span>
+<span class="n">stroke_names</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mridangam_ids</span><span class="p">:</span>
+    <span class="n">stroke_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mridangam_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">stroke_name</span><span class="p">)</span>
+<span class="n">stroke_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">stroke_names</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">stroke_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;bheem&#39; &#39;cha&#39; &#39;dheem&#39; &#39;dhin&#39; &#39;num&#39; &#39;ta&#39; &#39;tha&#39; &#39;tham&#39; &#39;thi&#39; &#39;thom&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can create a dictionary using stroke type as keys</span>
+<span class="n">stroke_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">stroke_names</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mridangam_ids</span><span class="p">:</span>
+    <span class="n">stroke_dict</span><span class="p">[</span><span class="n">mridangam_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">stroke_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mridangam_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">audio_path</span><span class="p">)</span>
+
+<span class="n">stroke_dict</span><span class="p">[</span><span class="s1">&#39;bheem&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224030__akshaylaya__bheem-b-001.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224031__akshaylaya__bheem-b-002.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224032__akshaylaya__bheem-b-003.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224033__akshaylaya__bheem-b-004.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224034__akshaylaya__bheem-b-005.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C/225356__akshaylaya__bheem-c-001.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C/225357__akshaylaya__bheem-c-002.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C/225358__akshaylaya__bheem-c-003.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C#/226488__akshaylaya__bheem-csh-001.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228625__akshaylaya__bheem-dsh-001.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228626__akshaylaya__bheem-dsh-002.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228627__akshaylaya__bheem-dsh-003.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228628__akshaylaya__bheem-dsh-004.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228629__akshaylaya__bheem-dsh-005.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228630__akshaylaya__bheem-dsh-006.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228631__akshaylaya__bheem-dsh-007.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228632__akshaylaya__bheem-dsh-008.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228633__akshaylaya__bheem-dsh-009.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228634__akshaylaya__bheem-dsh-010.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228635__akshaylaya__bheem-dsh-011.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228636__akshaylaya__bheem-dsh-012.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228637__akshaylaya__bheem-dsh-013.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228638__akshaylaya__bheem-dsh-014.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228639__akshaylaya__bheem-dsh-015.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230136__akshaylaya__bheem-e-001.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230137__akshaylaya__bheem-e-002.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230138__akshaylaya__bheem-e-003.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230139__akshaylaya__bheem-e-004.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230140__akshaylaya__bheem-e-005.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230141__akshaylaya__bheem-e-006.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230142__akshaylaya__bheem-e-007.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230143__akshaylaya__bheem-e-008.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230144__akshaylaya__bheem-e-009.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230145__akshaylaya__bheem-e-010.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230146__akshaylaya__bheem-e-011.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230147__akshaylaya__bheem-e-012.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230148__akshaylaya__bheem-e-013.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230149__akshaylaya__bheem-e-014.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230150__akshaylaya__bheem-e-015.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230151__akshaylaya__bheem-e-016.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230152__akshaylaya__bheem-e-017.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230153__akshaylaya__bheem-e-018.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230154__akshaylaya__bheem-e-019.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230155__akshaylaya__bheem-e-020.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230156__akshaylaya__bheem-e-021.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230157__akshaylaya__bheem-e-022.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230158__akshaylaya__bheem-e-023.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230159__akshaylaya__bheem-e-024.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230160__akshaylaya__bheem-e-025.wav&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Raw-data preprocess analysis parameters</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">mridangam_data</span><span class="p">[</span><span class="n">mridangam_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">audio</span>
+
+<span class="n">num_strokes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stroke_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Plot waveforms of random samples of each stroke type...&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">num_strokes</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">file_ind_inlist</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># 0: let&#39;s take the first file in the list for sample plots</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">stroke</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stroke_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+    <span class="n">sample_file</span> <span class="o">=</span> <span class="n">stroke_dict</span><span class="p">[</span><span class="n">stroke</span><span class="p">][</span><span class="n">file_ind_inlist</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">ess</span><span class="o">.</span><span class="n">MonoLoader</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">sample_file</span><span class="p">,</span> <span class="n">sampleRate</span> <span class="o">=</span> <span class="n">fs</span><span class="p">)()</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_strokes</span><span class="p">,(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">stroke</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plot waveforms of random samples of each stroke type...
+</pre></div>
+</div>
+<img alt="../_images/Mridangam_dataset_10_1.png" src="../_images/Mridangam_dataset_10_1.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "nkundiushuti/mir-startpack",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./inst_clas"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="methods.html" title="previous page">Methods</a>
+    <a class='right-next' id="next-link" href="../bibliography.html" title="next page">Bibliography</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Marius Miron, Genis Plaja, Pedro Ramoneda, Xavier Serra<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
