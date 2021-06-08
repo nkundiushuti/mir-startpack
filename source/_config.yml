@@ -1,11 +1,11 @@
 # Book settings
 title: Music Information Retrieval Starting Pack
 author: Marius Miron, Genis Plaja, Pedro Ramoneda, Xavier Serra
-#logo: logo.png
+logo: images/mtg_logo.png
 
 latex:
   latex_documents:
-    targetname: book.tex
+    targetname: mir-starting-pack.tex
 
 repository:
   url          : https://github.com/nkundiushuti/mir-startpack

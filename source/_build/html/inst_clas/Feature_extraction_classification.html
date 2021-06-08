@@ -1,0 +1,1363 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feature extraction and classification &#8212; Music Information Retrieval Starting Pack</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bibliography" href="../bibliography.html" />
+    <link rel="prev" title="The Mridangam Stroke Dataset" href="Mridangam_dataset.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/mtg_logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Music Information Retrieval Starting Pack</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../home.html">
+   Music Information Retrieval Starting Pack
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Instrument classification
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="methods.html">
+   Methods
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Mridangam_dataset.html">
+   The Mridangam Stroke Dataset
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Feature extraction and classification
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Resources
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../bibliography.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/inst_clas/Feature_extraction_classification.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/nkundiushuti/mir-startpack"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/nkundiushuti/mir-startpack/issues/new?title=Issue%20on%20page%20%2Finst_clas/Feature_extraction_classification.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/nkundiushuti/mir-startpack/master?urlpath=tree/source/inst_clas/Feature_extraction_classification.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/nkundiushuti/mir-startpack/blob/master/source/inst_clas/Feature_extraction_classification.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#instalation-of-packages">
+   Instalation of packages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-processing">
+   Data processing
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-downloading-validation">
+     Data downloading, validation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#feature-extraction">
+   Feature extraction
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#preprocessing-of-raw-data-segmentation-splitting-alignment">
+     Preprocessing of raw data: Segmentation, splitting, alignment,…
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#preprocessing-of-the-features">
+     Preprocessing of the features
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#supervised-learning-approach-support-vector-machines">
+     Supervised learning approach (Support Vector Machines)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unsupervised-learning-approach-neural-network">
+     Unsupervised learning approach (Neural Network)
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="feature-extraction-and-classification">
+<h1>Feature extraction and classification<a class="headerlink" href="#feature-extraction-and-classification" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="instalation-of-packages">
+<h2>Instalation of packages<a class="headerlink" href="#instalation-of-packages" title="Permalink to this headline">¶</a></h2>
+<p>To download, validate, and load the data we use the mirdata library.
+We use MTG’s <a class="reference external" href="https://essentia.upf.edu">essentia</a> for audio loading and feature computation. Matplotlib’s pyplot is used for plotting and pandas for data stats.
+We install these libraries through PyPI.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%capture
+#If not installed, install Essentia. 
+# This cell is for running the notebook in Colab
+import importlib.util
+if importlib.util.find_spec(&#39;essentia&#39;) is None:
+    !pip install essentia
+
+!pip install git+https://github.com/mir-dataset-loaders/mirdata.git
+!pip install pandas
+!pip install matplotlib
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Basic imports</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Imports to support MIR</span>
+<span class="kn">import</span> <span class="nn">mirdata</span>
+<span class="kn">import</span> <span class="nn">essentia.standard</span> <span class="k">as</span> <span class="nn">ess</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="data-processing">
+<h2>Data processing<a class="headerlink" href="#data-processing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-downloading-validation">
+<h3>Data downloading, validation<a class="headerlink" href="#data-downloading-validation" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Import Mridangam Stroke Dataset</span>
+<span class="n">mridangam_stroke</span> <span class="o">=</span> <span class="n">mirdata</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="s1">&#39;mridangam_stroke&#39;</span><span class="p">)</span>
+
+<span class="c1">#This cell downloads and validates the mridangam dataset</span>
+<span class="n">mridangam_stroke</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>  <span class="c1"># download the dataset</span>
+<span class="n">mridangam_stroke</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>  <span class="c1"># validate that all the expected files are there</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Downloading [&#39;remote_data&#39;] to /Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: [remote_data] downloading mridangam_stroke_1.5.zip
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: /Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5.zip already exists and will not be downloaded. Rerun with force_overwrite=True to delete this file and force the download.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/6976 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  4%|▍         | 307/6976 [00:00&lt;00:02, 3065.77it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 10%|▉         | 669/6976 [00:00&lt;00:01, 3387.56it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 14%|█▍        | 1008/6976 [00:00&lt;00:01, 3254.49it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 19%|█▉        | 1340/6976 [00:00&lt;00:01, 3274.49it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 24%|██▍       | 1668/6976 [00:00&lt;00:01, 3118.63it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 30%|██▉       | 2082/6976 [00:00&lt;00:01, 3448.60it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 36%|███▋      | 2536/6976 [00:00&lt;00:01, 3791.71it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 43%|████▎     | 3023/6976 [00:00&lt;00:00, 4127.29it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 51%|█████     | 3546/6976 [00:00&lt;00:00, 4465.47it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 58%|█████▊    | 4035/6976 [00:01&lt;00:00, 4591.53it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 64%|██████▍   | 4499/6976 [00:01&lt;00:00, 4601.27it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 71%|███████   | 4961/6976 [00:01&lt;00:00, 4112.40it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 77%|███████▋  | 5383/6976 [00:01&lt;00:00, 4125.97it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 83%|████████▎ | 5814/6976 [00:01&lt;00:00, 4176.07it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89%|████████▉ | 6237/6976 [00:01&lt;00:00, 4051.19it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 97%|█████████▋| 6759/6976 [00:01&lt;00:00, 4383.40it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 6976/6976 [00:01&lt;00:00, 4052.13it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Success: the dataset is complete and all files are valid.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: --------------------
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>({&#39;tracks&#39;: {}}, {&#39;tracks&#39;: {}})
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the mirdata library the track ids in the dataset can be seen retrieved using the <em>track_ids</em> attribute. The <em>load_tracks</em> methods loads all the tracks in a dictionary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mridangam_ids</span> <span class="o">=</span> <span class="n">mridangam_stroke</span><span class="o">.</span><span class="n">track_ids</span>  <span class="c1"># Load Mridangam IDs</span>
+<span class="n">mridangam_data</span> <span class="o">=</span> <span class="n">mridangam_stroke</span><span class="o">.</span><span class="n">load_tracks</span><span class="p">()</span>  <span class="c1"># Load Mridangam data</span>
+
+<span class="n">mridangam_data</span><span class="p">[</span><span class="n">mridangam_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>  <span class="c1"># Visualize a single track</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Track(
+  audio_path=&quot;...mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224030__akshaylaya__bheem-b-001.wav&quot;,
+  stroke_name=&quot;bheem&quot;,
+  tonic=&quot;B&quot;,
+  track_id=&quot;224030&quot;,
+  audio: The track&#39;s audio
+
+        Returns,
+)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get complete list of different strokes</span>
+<span class="n">stroke_names</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mridangam_ids</span><span class="p">:</span>
+    <span class="n">stroke_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mridangam_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">stroke_name</span><span class="p">)</span>
+<span class="n">stroke_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">stroke_names</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">stroke_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;bheem&#39; &#39;cha&#39; &#39;dheem&#39; &#39;dhin&#39; &#39;num&#39; &#39;ta&#39; &#39;tha&#39; &#39;tham&#39; &#39;thi&#39; &#39;thom&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can create a dictionary using stroke type as keys</span>
+<span class="n">stroke_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">stroke_names</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mridangam_ids</span><span class="p">:</span>
+    <span class="n">stroke_dict</span><span class="p">[</span><span class="n">mridangam_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">stroke_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mridangam_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">audio_path</span><span class="p">)</span>
+
+<span class="n">stroke_dict</span><span class="p">[</span><span class="s1">&#39;bheem&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224030__akshaylaya__bheem-b-001.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224031__akshaylaya__bheem-b-002.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224032__akshaylaya__bheem-b-003.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224033__akshaylaya__bheem-b-004.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224034__akshaylaya__bheem-b-005.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C/225356__akshaylaya__bheem-c-001.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C/225357__akshaylaya__bheem-c-002.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C/225358__akshaylaya__bheem-c-003.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C#/226488__akshaylaya__bheem-csh-001.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228625__akshaylaya__bheem-dsh-001.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228626__akshaylaya__bheem-dsh-002.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228627__akshaylaya__bheem-dsh-003.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228628__akshaylaya__bheem-dsh-004.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228629__akshaylaya__bheem-dsh-005.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228630__akshaylaya__bheem-dsh-006.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228631__akshaylaya__bheem-dsh-007.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228632__akshaylaya__bheem-dsh-008.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228633__akshaylaya__bheem-dsh-009.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228634__akshaylaya__bheem-dsh-010.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228635__akshaylaya__bheem-dsh-011.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228636__akshaylaya__bheem-dsh-012.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228637__akshaylaya__bheem-dsh-013.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228638__akshaylaya__bheem-dsh-014.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228639__akshaylaya__bheem-dsh-015.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230136__akshaylaya__bheem-e-001.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230137__akshaylaya__bheem-e-002.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230138__akshaylaya__bheem-e-003.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230139__akshaylaya__bheem-e-004.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230140__akshaylaya__bheem-e-005.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230141__akshaylaya__bheem-e-006.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230142__akshaylaya__bheem-e-007.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230143__akshaylaya__bheem-e-008.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230144__akshaylaya__bheem-e-009.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230145__akshaylaya__bheem-e-010.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230146__akshaylaya__bheem-e-011.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230147__akshaylaya__bheem-e-012.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230148__akshaylaya__bheem-e-013.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230149__akshaylaya__bheem-e-014.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230150__akshaylaya__bheem-e-015.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230151__akshaylaya__bheem-e-016.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230152__akshaylaya__bheem-e-017.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230153__akshaylaya__bheem-e-018.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230154__akshaylaya__bheem-e-019.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230155__akshaylaya__bheem-e-020.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230156__akshaylaya__bheem-e-021.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230157__akshaylaya__bheem-e-022.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230158__akshaylaya__bheem-e-023.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230159__akshaylaya__bheem-e-024.wav&#39;,
+ &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230160__akshaylaya__bheem-e-025.wav&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="feature-extraction">
+<h2>Feature extraction<a class="headerlink" href="#feature-extraction" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Raw-data preprocess analysis parameters</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">mridangam_data</span><span class="p">[</span><span class="n">mridangam_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">audio</span>
+
+<span class="n">num_strokes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stroke_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Plot waveforms of random samples of each stroke type...&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">num_strokes</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">file_ind_inlist</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># 0: let&#39;s take the first file in the list for sample plots</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">stroke</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stroke_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+    <span class="n">sample_file</span> <span class="o">=</span> <span class="n">stroke_dict</span><span class="p">[</span><span class="n">stroke</span><span class="p">][</span><span class="n">file_ind_inlist</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">ess</span><span class="o">.</span><span class="n">MonoLoader</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">sample_file</span><span class="p">,</span> <span class="n">sampleRate</span> <span class="o">=</span> <span class="n">fs</span><span class="p">)()</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_strokes</span><span class="p">,(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">stroke</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plot waveforms of random samples of each stroke type...
+</pre></div>
+</div>
+<img alt="../_images/Feature_extraction_classification_11_1.png" src="../_images/Feature_extraction_classification_11_1.png" />
+</div>
+</div>
+<div class="section" id="preprocessing-of-raw-data-segmentation-splitting-alignment">
+<h3>Preprocessing of raw data: Segmentation, splitting, alignment,…<a class="headerlink" href="#preprocessing-of-raw-data-segmentation-splitting-alignment" title="Permalink to this headline">¶</a></h3>
+<p>While common preprocessing steps (such as amplitude normalisation) exist, there is often some dataset and task specific preprocessing tasks required for grouping, cleaning, and format change.</p>
+<p>In the downloaded dataset, recordings include a sequence of isolated notes played in sequence which could be split into isolated notes. We would like to investigate the option of splitting using a fixed energy threshold (which would help us seperate notes using the silence regions). Let’s define a function to perform this operation and visualize some samples to observe the effectiveness of it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Raw-data preprocess analysis parameters</span>
+<span class="n">windowSize</span> <span class="o">=</span> <span class="mi">1024</span>
+<span class="n">hopSize</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">NRG_threshold_ratio</span> <span class="o">=</span> <span class="mf">0.005</span> <span class="c1">#threshold expressed as ratio with respect to the maximum value</span>
+<span class="c1">#Let&#39;s put in a container to be able to use as a single argument in function calls</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fs&quot;</span><span class="p">:</span><span class="n">fs</span><span class="p">,</span> <span class="s2">&quot;windowSize&quot;</span><span class="p">:</span><span class="n">windowSize</span><span class="p">,</span> <span class="s2">&quot;hopSize&quot;</span><span class="p">:</span><span class="n">hopSize</span><span class="p">,</span> <span class="s2">&quot;NRG_threshold_ratio&quot;</span><span class="p">:</span> <span class="n">NRG_threshold_ratio</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Function definition</span>
+<span class="k">def</span> <span class="nf">split_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Function to define split boundaries based on a fixed energy threshold</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">ess</span><span class="o">.</span><span class="n">MonoLoader</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span> <span class="n">sampleRate</span> <span class="o">=</span> <span class="n">fs</span><span class="p">)()</span>
+    <span class="n">NRG</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="c1">#Main windowing and feature extraction loop</span>
+    <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">ess</span><span class="o">.</span><span class="n">FrameGenerator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">frameSize</span> <span class="o">=</span> <span class="n">windowSize</span><span class="p">,</span> <span class="n">hopSize</span> <span class="o">=</span> <span class="n">hopSize</span><span class="p">,</span> <span class="n">startFromZero</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">NRG</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ess</span><span class="o">.</span><span class="n">Energy</span><span class="p">()(</span><span class="n">frame</span><span class="p">))</span>
+    <span class="n">NRG</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">NRG</span><span class="p">)</span>
+    <span class="n">NRG</span> <span class="o">=</span> <span class="n">NRG</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">NRG</span><span class="p">)</span>
+    
+    <span class="c1">#Applying energy threshold to decide wave split boundaries</span>
+    <span class="n">split_decision_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">NRG</span><span class="p">)</span>
+    <span class="n">split_decision_func</span><span class="p">[</span><span class="n">NRG</span> <span class="o">&gt;</span> <span class="n">NRG_threshold_ratio</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#Setting segment boundaries</span>
+    <span class="c1">#Inserting a zero at the beginning since we will decide the transitions using a diff function</span>
+    <span class="n">split_decision_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">split_decision_func</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">diff_split_decision</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">split_decision_func</span><span class="p">)</span>
+    <span class="c1">#Start indexes: transition from 0 to 1</span>
+    <span class="n">start_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">diff_split_decision</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">hopSize</span>
+    <span class="c1">#Stop indexes: transition from 1 to 0</span>
+    <span class="n">stop_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">diff_split_decision</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">hopSize</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">NRG</span><span class="p">,</span> <span class="n">split_decision_func</span><span class="p">,</span> <span class="n">start_indexes</span><span class="p">,</span> <span class="n">stop_indexes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_strokes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stroke_names</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sample plots for waveform versus energy and splits based on energy threshold&quot;</span><span class="p">)</span>
+
+<span class="n">file_indexes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">file_ind_inlist</span> <span class="ow">in</span> <span class="n">file_indexes</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">file_ind_inlist</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">num_strokes</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">stroke</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stroke_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">sample_file</span> <span class="o">=</span> <span class="n">stroke_dict</span><span class="p">[</span><span class="n">stroke</span><span class="p">][</span><span class="n">file_ind_inlist</span><span class="p">]</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">NRG</span><span class="p">,</span> <span class="n">split_decision_func</span><span class="p">,</span> <span class="n">start_indexes</span><span class="p">,</span> <span class="n">stop_indexes</span><span class="p">)</span> <span class="o">=</span> <span class="n">split_file</span><span class="p">(</span><span class="n">sample_file</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="c1">#Plotting functions for checking the split decisions</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_strokes</span><span class="p">,(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">stroke</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;sound waveform&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">NRG</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="n">hopSize</span><span class="p">,</span> <span class="n">NRG</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;NRG&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">split_decision_func</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="n">hopSize</span><span class="p">,</span> <span class="n">split_decision_func</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;split function&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">start_indexes</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Segment start&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">stop_indexes</span><span class="p">,</span> <span class="n">ymin</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Segment stop&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample plots for waveform versus energy and splits based on energy threshold
+</pre></div>
+</div>
+<img alt="../_images/Feature_extraction_classification_16_1.png" src="../_images/Feature_extraction_classification_16_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">main_data_dir</span> <span class="o">=</span> <span class="s1">&#39;/content&#39;</span>
+<span class="n">segments_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">main_data_dir</span><span class="p">,</span><span class="s1">&#39;segments&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">segments_dir</span><span class="p">):</span> <span class="c1">#creating the directory</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">segments_dir</span><span class="p">)</span>
+
+<span class="n">segment_files</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">stroke</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">stroke_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">sample_file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="c1">#Get file id</span>
+        <span class="n">stroke_id</span> <span class="o">=</span>  <span class="n">sample_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;__&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">ess</span><span class="o">.</span><span class="n">MonoLoader</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">sample_file</span><span class="p">,</span> <span class="n">sampleRate</span> <span class="o">=</span> <span class="n">fs</span><span class="p">)()</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">NRG</span><span class="p">,</span> <span class="n">split_decision_func</span><span class="p">,</span> <span class="n">start_indexes</span><span class="p">,</span> <span class="n">stop_indexes</span><span class="p">)</span> <span class="o">=</span> <span class="n">split_file</span><span class="p">(</span><span class="n">sample_file</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="c1">#Croping segments</span>
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">start_indexes</span><span class="p">,</span> <span class="n">stop_indexes</span><span class="p">):</span>
+            <span class="n">x_seg</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">start</span><span class="p">:</span> <span class="n">stop</span><span class="p">]</span>
+            <span class="c1">#Final check for amplitude (to avoid silent segments selection due to noise in split function)</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_seg</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">0.05</span><span class="p">):</span>
+                <span class="c1">#Amplitude normalisation</span>
+                <span class="n">x_seg</span> <span class="o">=</span> <span class="n">x_seg</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_seg</span><span class="p">))</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">segments_dir</span><span class="p">,</span> <span class="n">stroke_id</span> <span class="o">+</span> <span class="s1">&#39;.wav&#39;</span><span class="p">)</span>
+                <span class="n">ess</span><span class="o">.</span><span class="n">MonoWriter</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span> <span class="nb">format</span> <span class="o">=</span> <span class="s1">&#39;wav&#39;</span><span class="p">,</span> <span class="n">sampleRate</span> <span class="o">=</span> <span class="n">fs</span><span class="p">)(</span><span class="n">x_seg</span><span class="p">)</span>
+                <span class="n">segment_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">segment_files</span><span class="p">),</span><span class="s1">&#39;segment files created&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">4</span><span class="n">c5cff46d2de</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">segments_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">main_data_dir</span><span class="p">,</span><span class="s1">&#39;segments&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">segments_dir</span><span class="p">):</span> <span class="c1">#creating the directory</span>
+<span class="ne">----&gt; </span><span class="mi">4</span>     <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">segments_dir</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">segment_files</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/content/segments&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#If required, you can use this cell to delete all files in a given folder</span>
+<span class="k">def</span> <span class="nf">delete_files_in_dir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Deleting all files in a directory</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">file</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file_name</span><span class="p">);</span><span class="nb">print</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">);</span>
+
+<span class="c1">#delete_files_in_dir(segments_dir)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s compute a list of common features for each of the files and form a data frame including features and categories. We will be using the <a class="reference external" href="https://essentia.upf.edu/documentation/reference/std_MusicExtractor.html">MusicExtractor function of Essentia</a> that would compute a large number of features commonly used in MIR literature.</p>
+<p>Essentia-MusicExtractor extracts a large number of features. For simplicity, let’s only keep low-level descriptors which are represented with a single scalar value as our feature set and discard other features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print descriptors to be considered</span>
+<span class="n">features</span><span class="p">,</span> <span class="n">features_frames</span> <span class="o">=</span> <span class="n">ess</span><span class="o">.</span><span class="n">MusicExtractor</span><span class="p">(</span><span class="n">lowlevelSilentFrames</span><span class="o">=</span><span class="s1">&#39;drop&#39;</span><span class="p">,</span>
+                                                      <span class="n">lowlevelFrameSize</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span>
+                                                      <span class="n">lowlevelHopSize</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>
+                                                      <span class="n">lowlevelStats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;stdev&#39;</span><span class="p">])(</span><span class="n">mridangam_data</span><span class="p">[</span><span class="s1">&#39;224030&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">audio_path</span><span class="p">)</span>
+
+<span class="n">scalar_lowlevel_descriptors</span> <span class="o">=</span> <span class="p">[</span><span class="n">descriptor</span> <span class="k">for</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="n">features</span><span class="o">.</span><span class="n">descriptorNames</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;lowlevel&#39;</span> <span class="ow">in</span> <span class="n">descriptor</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="n">descriptor</span><span class="p">],</span> <span class="nb">float</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Subset of features to be considered:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">scalar_lowlevel_descriptors</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Subset of features to be considered:
+ [&#39;lowlevel.average_loudness&#39;, &#39;lowlevel.barkbands_crest.mean&#39;, &#39;lowlevel.barkbands_crest.stdev&#39;, &#39;lowlevel.barkbands_flatness_db.mean&#39;, &#39;lowlevel.barkbands_flatness_db.stdev&#39;, &#39;lowlevel.barkbands_kurtosis.mean&#39;, &#39;lowlevel.barkbands_kurtosis.stdev&#39;, &#39;lowlevel.barkbands_skewness.mean&#39;, &#39;lowlevel.barkbands_skewness.stdev&#39;, &#39;lowlevel.barkbands_spread.mean&#39;, &#39;lowlevel.barkbands_spread.stdev&#39;, &#39;lowlevel.dissonance.mean&#39;, &#39;lowlevel.dissonance.stdev&#39;, &#39;lowlevel.dynamic_complexity&#39;, &#39;lowlevel.erbbands_crest.mean&#39;, &#39;lowlevel.erbbands_crest.stdev&#39;, &#39;lowlevel.erbbands_flatness_db.mean&#39;, &#39;lowlevel.erbbands_flatness_db.stdev&#39;, &#39;lowlevel.erbbands_kurtosis.mean&#39;, &#39;lowlevel.erbbands_kurtosis.stdev&#39;, &#39;lowlevel.erbbands_skewness.mean&#39;, &#39;lowlevel.erbbands_skewness.stdev&#39;, &#39;lowlevel.erbbands_spread.mean&#39;, &#39;lowlevel.erbbands_spread.stdev&#39;, &#39;lowlevel.hfc.mean&#39;, &#39;lowlevel.hfc.stdev&#39;, &#39;lowlevel.loudness_ebu128.integrated&#39;, &#39;lowlevel.loudness_ebu128.loudness_range&#39;, &#39;lowlevel.loudness_ebu128.momentary.mean&#39;, &#39;lowlevel.loudness_ebu128.momentary.stdev&#39;, &#39;lowlevel.loudness_ebu128.short_term.mean&#39;, &#39;lowlevel.loudness_ebu128.short_term.stdev&#39;, &#39;lowlevel.melbands_crest.mean&#39;, &#39;lowlevel.melbands_crest.stdev&#39;, &#39;lowlevel.melbands_flatness_db.mean&#39;, &#39;lowlevel.melbands_flatness_db.stdev&#39;, &#39;lowlevel.melbands_kurtosis.mean&#39;, &#39;lowlevel.melbands_kurtosis.stdev&#39;, &#39;lowlevel.melbands_skewness.mean&#39;, &#39;lowlevel.melbands_skewness.stdev&#39;, &#39;lowlevel.melbands_spread.mean&#39;, &#39;lowlevel.melbands_spread.stdev&#39;, &#39;lowlevel.pitch_salience.mean&#39;, &#39;lowlevel.pitch_salience.stdev&#39;, &#39;lowlevel.silence_rate_20dB.mean&#39;, &#39;lowlevel.silence_rate_20dB.stdev&#39;, &#39;lowlevel.silence_rate_30dB.mean&#39;, &#39;lowlevel.silence_rate_30dB.stdev&#39;, &#39;lowlevel.silence_rate_60dB.mean&#39;, &#39;lowlevel.silence_rate_60dB.stdev&#39;, &#39;lowlevel.spectral_centroid.mean&#39;, &#39;lowlevel.spectral_centroid.stdev&#39;, &#39;lowlevel.spectral_complexity.mean&#39;, &#39;lowlevel.spectral_complexity.stdev&#39;, &#39;lowlevel.spectral_decrease.mean&#39;, &#39;lowlevel.spectral_decrease.stdev&#39;, &#39;lowlevel.spectral_energy.mean&#39;, &#39;lowlevel.spectral_energy.stdev&#39;, &#39;lowlevel.spectral_energyband_high.mean&#39;, &#39;lowlevel.spectral_energyband_high.stdev&#39;, &#39;lowlevel.spectral_energyband_low.mean&#39;, &#39;lowlevel.spectral_energyband_low.stdev&#39;, &#39;lowlevel.spectral_energyband_middle_high.mean&#39;, &#39;lowlevel.spectral_energyband_middle_high.stdev&#39;, &#39;lowlevel.spectral_energyband_middle_low.mean&#39;, &#39;lowlevel.spectral_energyband_middle_low.stdev&#39;, &#39;lowlevel.spectral_entropy.mean&#39;, &#39;lowlevel.spectral_entropy.stdev&#39;, &#39;lowlevel.spectral_flux.mean&#39;, &#39;lowlevel.spectral_flux.stdev&#39;, &#39;lowlevel.spectral_kurtosis.mean&#39;, &#39;lowlevel.spectral_kurtosis.stdev&#39;, &#39;lowlevel.spectral_rms.mean&#39;, &#39;lowlevel.spectral_rms.stdev&#39;, &#39;lowlevel.spectral_rolloff.mean&#39;, &#39;lowlevel.spectral_rolloff.stdev&#39;, &#39;lowlevel.spectral_skewness.mean&#39;, &#39;lowlevel.spectral_skewness.stdev&#39;, &#39;lowlevel.spectral_spread.mean&#39;, &#39;lowlevel.spectral_spread.stdev&#39;, &#39;lowlevel.spectral_strongpeak.mean&#39;, &#39;lowlevel.spectral_strongpeak.stdev&#39;, &#39;lowlevel.zerocrossingrate.mean&#39;, &#39;lowlevel.zerocrossingrate.stdev&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Running musicextractor for all files, keeping a subset of features, writing to an output file: data.csv</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extracting features and writing in data.csv file in the segments folder</span>
+<span class="c1">#  each line in the data.csv file represents a sample with features and the class information as the last element</span>
+<span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;/content/data.csv&#39;</span>
+<span class="n">file_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+    <span class="c1">#adding column names as the first line in csv</span>
+    <span class="n">line2write</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">scalar_lowlevel_descriptors</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;stroke&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;lowlevel.&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line2write</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">segment_files</span><span class="p">:</span>
+        <span class="n">file_count</span> <span class="o">+=</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">file_count</span> <span class="o">%</span> <span class="mi">20</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1">#print name of a file every 20 files</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">file_count</span><span class="p">,</span> <span class="s2">&quot;files processed, current file: &quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1">#Compute and write features for file</span>
+        <span class="n">features</span><span class="p">,</span> <span class="n">features_frames</span> <span class="o">=</span> <span class="n">ess</span><span class="o">.</span><span class="n">MusicExtractor</span><span class="p">(</span><span class="n">lowlevelSilentFrames</span><span class="o">=</span><span class="s1">&#39;drop&#39;</span><span class="p">,</span>
+                                                      <span class="n">lowlevelFrameSize</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span>
+                                                      <span class="n">lowlevelHopSize</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>
+                                                      <span class="n">lowlevelStats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;stdev&#39;</span><span class="p">])(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">selected_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">[</span><span class="n">descriptor</span><span class="p">]</span> <span class="k">for</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="n">scalar_lowlevel_descriptors</span><span class="p">]</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">line2write</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">selected_features</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line2write</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A total of &quot;</span><span class="p">,</span> <span class="n">file_count</span><span class="p">,</span> <span class="s2">&quot;files processed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="mi">2</span><span class="n">c4fda01ce40</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;/content/data.csv&#39;</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">file_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="c1">#adding column names as the first line in csv</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="n">line2write</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">scalar_lowlevel_descriptors</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;stroke&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;lowlevel.&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/content/data.csv&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Read data with pandas module</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+
+<span class="c1">#Plot first lines of our data</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">15</span><span class="o">-</span><span class="n">e01ca5a02bed</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#Read data with pandas module</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1">#Plot first lines of our data</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, dialect, error_bad_lines, warn_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">608</span>     <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">609</span> 
+<span class="ne">--&gt; </span><span class="mi">610</span>     <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">611</span> 
+<span class="g g-Whitespace">    </span><span class="mi">612</span> 
+
+<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">460</span> 
+<span class="g g-Whitespace">    </span><span class="mi">461</span>     <span class="c1"># Create the parser.</span>
+<span class="ne">--&gt; </span><span class="mi">462</span>     <span class="n">parser</span> <span class="o">=</span> <span class="n">TextFileReader</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">463</span> 
+<span class="g g-Whitespace">    </span><span class="mi">464</span>     <span class="k">if</span> <span class="n">chunksize</span> <span class="ow">or</span> <span class="n">iterator</span><span class="p">:</span>
+
+<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">__init__</span><span class="nt">(self, f, engine, **kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">817</span>             <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">818</span> 
+<span class="ne">--&gt; </span><span class="mi">819</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">820</span> 
+<span class="g g-Whitespace">    </span><span class="mi">821</span>     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">_make_engine</span><span class="nt">(self, engine)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1048</span>             <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1049</span>         <span class="c1"># error: Too many arguments for &quot;ParserBase&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1050</span>         <span class="k">return</span> <span class="n">mapping</span><span class="p">[</span><span class="n">engine</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1051</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1052</span>     <span class="k">def</span> <span class="nf">_failover_to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">__init__</span><span class="nt">(self, src, **kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1865</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1866</span>         <span class="c1"># open handles</span>
+<span class="ne">-&gt; </span><span class="mi">1867</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_open_handles</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1868</span>         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">1869</span>         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">,</span> <span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="s2">&quot;memory_map&quot;</span><span class="p">,</span> <span class="s2">&quot;compression&quot;</span><span class="p">):</span>
+
+<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">_open_handles</span><span class="nt">(self, src, kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1366</span>             <span class="n">compression</span><span class="o">=</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1367</span>             <span class="n">memory_map</span><span class="o">=</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memory_map&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+<span class="ne">-&gt; </span><span class="mi">1368</span>             <span class="n">storage_options</span><span class="o">=</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1369</span>         <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1370</span> 
+
+<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/common.py</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">645</span>                 <span class="n">encoding</span><span class="o">=</span><span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">646</span>                 <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span>
+<span class="ne">--&gt; </span><span class="mi">647</span>                 <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">648</span>             <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">649</span>         <span class="k">else</span><span class="p">:</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/content/data.csv&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Take two random features and plot the sample points</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;melbands_flatness_db.mean&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;spectral_centroid.mean&quot;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;stroke&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">16</span><span class="o">-</span><span class="n">e16dfb345453</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Take two random features and plot the sample points</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;melbands_flatness_db.mean&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;spectral_centroid.mean&quot;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;stroke&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">);</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;seaborn&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="preprocessing-of-the-features">
+<h3>Preprocessing of the features<a class="headerlink" href="#preprocessing-of-the-features" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_modif</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1">#Let&#39;s use sklearn&#39;s preprocessing tools for applying normalisation to features</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="n">min_max_scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span>
+<span class="n">data_modif</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">84</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_max_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">84</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">17</span><span class="o">-</span><span class="mi">8</span><span class="n">f60691fb04e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">data_modif</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1">#Let&#39;s use sklearn&#39;s preprocessing tools for applying normalisation to features</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">min_max_scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span>
+
+<span class="ne">NameError</span>: name &#39;data&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Checking if our data is balanced (if not, we should balance it to prevent our model to be baised)</span>
+<span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">18</span><span class="o">-</span><span class="n">e1a7cd2d0d6c</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Checking if our data is balanced (if not, we should balance it to prevent our model to be baised)</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+
+<span class="ne">NameError</span>: name &#39;data_modif&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Here we didn&#39;t pick the lowest number, 49 for bheem, which is too small. Instead, we choose the 330 of &quot;cha&quot;</span>
+<span class="n">min_number</span> <span class="o">=</span> <span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[</span><span class="s1">&#39;cha&#39;</span><span class="p">]</span>
+<span class="n">thi_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;thi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+<span class="n">tha_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;tha&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
+<span class="n">ta_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;ta&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
+<span class="n">thom_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;thom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
+<span class="n">num_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;num&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
+<span class="n">dhin_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;dhin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
+<span class="n">dheem_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;dheem&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
+<span class="n">tham_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;tham&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
+<span class="n">cha_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;cha&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
+<span class="n">bheem_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;bheem&#39;</span><span class="p">]</span>
+<span class="c1">#Merging after downsampling</span>
+<span class="n">data_modif</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">thi_data</span><span class="p">,</span> <span class="n">tha_data</span><span class="p">,</span> <span class="n">ta_data</span><span class="p">,</span> <span class="n">thom_data</span><span class="p">,</span> <span class="n">num_data</span><span class="p">,</span> <span class="n">dhin_data</span><span class="p">,</span> <span class="n">dheem_data</span><span class="p">,</span> <span class="n">tham_data</span><span class="p">,</span> <span class="n">cha_data</span><span class="p">,</span> <span class="n">bheem_data</span><span class="p">])</span>
+<span class="c1">#Checking the balance again</span>
+<span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">19</span><span class="o">-</span><span class="mi">57</span><span class="n">b63456d1ae</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Here we didn&#39;t pick the lowest number, 49 for bheem, which is too small. Instead, we choose the 330 of &quot;cha&quot;</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">min_number</span> <span class="o">=</span> <span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[</span><span class="s1">&#39;cha&#39;</span><span class="p">]</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">thi_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;thi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">tha_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;tha&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">ta_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;ta&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;data_modif&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Training a classifier </span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>##Training a classifier</p>
+</div>
+<div class="section" id="supervised-learning-approach-support-vector-machines">
+<h3>Supervised learning approach (Support Vector Machines)<a class="headerlink" href="#supervised-learning-approach-support-vector-machines" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Input values put in a matrix, there are 84 features</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data_modif</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">84</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> 
+<span class="c1"># Creating output values</span>
+<span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="p">)</span>  <span class="c1"># convert to categorical data</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="p">)</span>  <span class="c1"># create label encoded outputs</span>
+<span class="c1"># Print the first sample</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Features of the first sample: &quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Class of the first sample: &quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">21</span><span class="o">-</span><span class="mi">8</span><span class="n">f33d04bb727</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Input values put in a matrix, there are 84 features</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">X</span> <span class="o">=</span> <span class="n">data_modif</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">84</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Creating output values</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="p">)</span>  <span class="c1"># convert to categorical data</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="p">)</span>  <span class="c1"># create label encoded outputs</span>
+
+<span class="ne">NameError</span>: name &#39;data_modif&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s split data into test and train sets</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.33</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Check sizes of input and output vectors</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Size of train features matrix: &quot;</span><span class="p">,</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;, Size of train output vector: &quot;</span><span class="p">,</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Size of test features matrix: &quot;</span><span class="p">,</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;, Size of test output vector: &quot;</span><span class="p">,</span><span class="n">y_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">22</span><span class="o">-</span><span class="mi">5007</span><span class="n">dcbc5259</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Let&#39;s split data into test and train sets</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.33</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Check sizes of input and output vectors</span>
+
+<span class="ne">NameError</span>: name &#39;X&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define and train the model</span>
+
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">gamma</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">X_train</span><span class="o">.</span><span class="n">var</span><span class="p">()))</span>
+
+<span class="c1"># Fit model with training data</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Predict classes of test samples</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">23</span><span class="o">-</span><span class="n">b6046d3c935b</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">gamma</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">X_train</span><span class="o">.</span><span class="n">var</span><span class="p">()))</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Fit model with training data</span>
+
+<span class="ne">NameError</span>: name &#39;X_train&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test the model</span>
+<span class="c1"># Let&#39;s check for each sample in the test set if prediction matches the true class information</span>
+<span class="n">y_test</span> <span class="o">==</span> <span class="n">y_pred</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">24</span><span class="o">-</span><span class="n">f98da4892968</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Test the model</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># Let&#39;s check for each sample in the test set if prediction matches the true class information</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">y_test</span> <span class="o">==</span> <span class="n">y_pred</span>
+
+<span class="ne">NameError</span>: name &#39;y_test&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data is balanced, so you can use accuracy as a measure:</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;accuracy: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="n">y_pred</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">25</span><span class="o">-</span><span class="mi">122</span><span class="n">d8a7646f2</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Data is balanced, so you can use accuracy as a measure:</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;accuracy: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="n">y_pred</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">))</span>
+
+<span class="ne">NameError</span>: name &#39;y_test&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the confusion matrix</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="p">)</span>
+<span class="n">conf_mat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">classes</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">classes</span><span class="p">)</span>
+<span class="n">conf_mat</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Actual&#39;</span>
+<span class="n">conf_mat</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Predicted&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">conf_mat</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">annot_kws</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">annot</span> <span class="o">=</span> <span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">26</span><span class="o">-</span><span class="mi">87</span><span class="n">f2f5e44b10</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Print the confusion matrix</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="p">)</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;seaborn&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="unsupervised-learning-approach-neural-network">
+<h3>Unsupervised learning approach (Neural Network)<a class="headerlink" href="#unsupervised-learning-approach-neural-network" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="c1"># Let&#39;s start by splitting our data </span>
+<span class="n">X_train_val</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train_val</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.20</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># ..and apply normalisation</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_val</span><span class="p">)</span>
+<span class="n">norm_x_train_val</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train_val</span><span class="p">)</span>
+<span class="n">norm_x_test</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">27</span><span class="o">-</span><span class="n">b04e451e559c</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Let&#39;s start by splitting our data</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">X_train_val</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train_val</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.20</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># ..and apply normalisation</span>
+
+<span class="ne">NameError</span>: name &#39;X&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+<span class="n">onehot_encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">y_train_val_onehot</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_train_val</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train_val</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">y_test_onehot</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One-hot encoded y_train_val shape = &quot;</span><span class="p">,</span> <span class="n">y_train_val_onehot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One-hot encoded y_test shape = &quot;</span><span class="p">,</span> <span class="n">y_test_onehot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">28</span><span class="o">-</span><span class="mi">01</span><span class="n">b93944c4f9</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">onehot_encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">y_train_val_onehot</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_train_val</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train_val</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">y_test_onehot</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One-hot encoded y_train_val shape = &quot;</span><span class="p">,</span> <span class="n">y_train_val_onehot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;y_train_val&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">layers</span>
+
+<span class="k">def</span> <span class="nf">compose_model</span><span class="p">(</span><span class="n">num_features</span><span class="p">):</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+
+    <span class="c1"># Input layer </span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;InputLayer&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_features</span><span class="p">,)))</span>
+    
+    <span class="c1"># 1. hidden layer</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;HiddenLayer_1&#39;</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="mi">40</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;tanh&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">))</span>
+
+    <span class="c1"># 2. hidden layer</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;HiddenLayer_2&#39;</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="mi">20</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">())</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">))</span>
+
+    <span class="c1"># Output layer</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Output_layer&#39;</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">compose_model</span><span class="p">(</span><span class="n">X_train_val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">29</span><span class="o">-</span><span class="n">ee18191e3d67</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">layers</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="k">def</span> <span class="nf">compose_model</span><span class="p">(</span><span class="n">num_features</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;keras&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>  <span class="c1"># Plot summary of the model</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">30</span><span class="o">-</span><span class="n">e7c0d23d3345</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>  <span class="c1"># Plot summary of the model</span>
+
+<span class="ne">NameError</span>: name &#39;model&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span> <span class="o">=</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span> <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<span class="n">summary</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_val</span><span class="p">,</span> <span class="n">y_train_val_onehot</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">31</span><span class="o">-</span><span class="n">fffed6c9f97a</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span> <span class="o">=</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span> <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">summary</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_val</span><span class="p">,</span> <span class="n">y_train_val_onehot</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;model&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test_onehot</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test loss:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">32</span><span class="o">-</span><span class="mi">750</span><span class="n">b24fcb6a1</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test_onehot</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test loss:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="ne">NameError</span>: name &#39;model&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># summarize history for accuracy</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;model accuracy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;validation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># summarize history for loss</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;model loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;validation&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">33</span><span class="o">-</span><span class="mi">557</span><span class="n">c06850d10</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># summarize history for accuracy</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">])</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;model accuracy&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;summary&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "nkundiushuti/mir-startpack",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./inst_clas"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="Mridangam_dataset.html" title="previous page">The Mridangam Stroke Dataset</a>
+    <a class='right-next' id="next-link" href="../bibliography.html" title="next page">Bibliography</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Marius Miron, Genis Plaja, Pedro Ramoneda, Xavier Serra<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

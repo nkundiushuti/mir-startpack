@@ -2,8 +2,9 @@
 
 - part: Instrument classification
   chapters:
-    - file: inst_clas/intro
     - file: inst_clas/methods
+    - file: inst_clas/Mridangam_dataset
+    - file: inst_clas/Feature_extraction_classification
 
 - part: Resources
   chapters:

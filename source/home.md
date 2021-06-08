@@ -11,6 +11,4 @@ alt: MIR guide
 ```
 
 
-#### Content
-
-
+## Content

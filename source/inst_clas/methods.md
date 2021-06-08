@@ -20,15 +20,4 @@ The features are then used as input to train an off-the-shelf machine learning c
 
 The rise of deep learning has seen also a paradigm shift in MIR. End-to-end approaches using as input the audio signals or time-frequency representations outperformed the feature engineering approaches {cite}`solanki2019music`.  
 
-In terms of machine learning approaches, neural networks architectures designed for audio and music signals replaced the off-the-shelf machine learning methods. These architectures are designed to take as input either the audio signal, spectrograms computed from the audio, the MFCCs or representations learned from the audio. 
-
-<!-- ```{figure} ../../images/path.png
----
-alt: description
-name: name
-scale: 35%
----
-Title
-```
-
-[k-means](https://en.wikipedia.org/wiki/K-means_clustering) -->
+In terms of machine learning approaches, neural networks architectures designed for audio and music signals replaced the off-the-shelf machine learning methods. These architectures are designed to take as input either the audio signal, spectrograms computed from the audio, the MFCCs or representations learned from the audio.
