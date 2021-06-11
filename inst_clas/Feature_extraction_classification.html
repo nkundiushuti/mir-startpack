@@ -51,7 +51,7 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Bibliography" href="../bibliography.html" />
+    <link rel="next" title="End-to-end classification using deep learning on the waveform" href="End_to_end_classification.html" />
     <link rel="prev" title="The Mridangam Stroke Dataset" href="Mridangam_dataset.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -108,6 +108,11 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Feature extraction and classification
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="End_to_end_classification.html">
+   End-to-end classification using deep learning on the waveform
   </a>
  </li>
 </ul>
@@ -267,13 +272,20 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#supervised-learning-approach-support-vector-machines">
-     Supervised learning approach (Support Vector Machines)
+    <a class="reference internal nav-link" href="#support-vector-machine">
+     Support Vector Machine
     </a>
    </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#evaluation">
+   Evaluation
+  </a>
+  <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#unsupervised-learning-approach-neural-network">
-     Unsupervised learning approach (Neural Network)
+    <a class="reference internal nav-link" href="#id1">
+     Support Vector Machine
     </a>
    </li>
   </ul>
@@ -291,6 +303,8 @@
                 
   <div class="section" id="feature-extraction-and-classification">
 <h1>Feature extraction and classification<a class="headerlink" href="#feature-extraction-and-classification" title="Permalink to this headline">¶</a></h1>
+<p>We extract various features from the audio files using essentia and we use these features as input for an <a class="reference external" href="https://en.wikipedia.org/wiki/Support-vector_machine">Support Vector Machine (SVM)</a> classifier.</p>
+<p>These features are related to the timbre</p>
 <div class="section" id="instalation-of-packages">
 <h2>Instalation of packages<a class="headerlink" href="#instalation-of-packages" title="Permalink to this headline">¶</a></h2>
 <p>To download, validate, and load the data we use the mirdata library.
@@ -323,6 +337,10 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 <span class="kn">import</span> <span class="nn">mirdata</span>
 <span class="kn">import</span> <span class="nn">essentia.standard</span> <span class="k">as</span> <span class="nn">ess</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Temporary folder to write features to</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="n">tempdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;TEST_TMPDIR&quot;</span><span class="p">,</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -356,55 +374,76 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  0%|          | 0/6976 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  4%|▍         | 307/6976 [00:00&lt;00:02, 3065.77it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  3%|▎         | 237/6976 [00:00&lt;00:02, 2366.21it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 10%|▉         | 669/6976 [00:00&lt;00:01, 3387.56it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  8%|▊         | 527/6976 [00:00&lt;00:02, 2678.10it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 14%|█▍        | 1008/6976 [00:00&lt;00:01, 3254.49it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 11%|█▏        | 795/6976 [00:00&lt;00:02, 2653.17it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 19%|█▉        | 1340/6976 [00:00&lt;00:01, 3274.49it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 15%|█▌        | 1061/6976 [00:00&lt;00:02, 2563.24it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 24%|██▍       | 1668/6976 [00:00&lt;00:01, 3118.63it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 19%|█▉        | 1350/6976 [00:00&lt;00:02, 2672.72it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 30%|██▉       | 2082/6976 [00:00&lt;00:01, 3448.60it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 23%|██▎       | 1618/6976 [00:00&lt;00:02, 2601.91it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 36%|███▋      | 2536/6976 [00:00&lt;00:01, 3791.71it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 28%|██▊       | 1939/6976 [00:00&lt;00:01, 2792.25it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 43%|████▎     | 3023/6976 [00:00&lt;00:00, 4127.29it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 32%|███▏      | 2231/6976 [00:00&lt;00:01, 2828.67it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 51%|█████     | 3546/6976 [00:00&lt;00:00, 4465.47it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 36%|███▌      | 2515/6976 [00:00&lt;00:01, 2718.14it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 58%|█████▊    | 4035/6976 [00:01&lt;00:00, 4591.53it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 40%|████      | 2794/6976 [00:01&lt;00:01, 2737.01it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 64%|██████▍   | 4499/6976 [00:01&lt;00:00, 4601.27it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 46%|████▌     | 3179/6976 [00:01&lt;00:01, 3066.90it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 71%|███████   | 4961/6976 [00:01&lt;00:00, 4112.40it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 51%|█████     | 3554/6976 [00:01&lt;00:01, 3262.74it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 77%|███████▋  | 5383/6976 [00:01&lt;00:00, 4125.97it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 56%|█████▌    | 3882/6976 [00:01&lt;00:00, 3228.11it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 83%|████████▎ | 5814/6976 [00:01&lt;00:00, 4176.07it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 60%|██████    | 4206/6976 [00:01&lt;00:00, 3029.03it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 89%|████████▉ | 6237/6976 [00:01&lt;00:00, 4051.19it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 65%|██████▍   | 4512/6976 [00:01&lt;00:00, 2764.59it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 97%|█████████▋| 6759/6976 [00:01&lt;00:00, 4383.40it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 69%|██████▊   | 4795/6976 [00:01&lt;00:00, 2313.27it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 6976/6976 [00:01&lt;00:00, 4052.13it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72%|███████▏  | 5055/6976 [00:01&lt;00:00, 2380.87it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 77%|███████▋  | 5343/6976 [00:01&lt;00:00, 2506.65it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 80%|████████  | 5604/6976 [00:02&lt;00:00, 2495.87it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 84%|████████▍ | 5878/6976 [00:02&lt;00:00, 2561.97it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 88%|████████▊ | 6140/6976 [00:02&lt;00:00, 2436.08it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 93%|█████████▎| 6468/6976 [00:02&lt;00:00, 2667.41it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 97%|█████████▋| 6765/6976 [00:02&lt;00:00, 2752.26it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 6976/6976 [00:02&lt;00:00, 2708.49it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Success: the dataset is complete and all files are valid.
@@ -418,26 +457,10 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 </div>
-<p>In the mirdata library the track ids in the dataset can be seen retrieved using the <em>track_ids</em> attribute. The <em>load_tracks</em> methods loads all the tracks in a dictionary.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mridangam_ids</span> <span class="o">=</span> <span class="n">mridangam_stroke</span><span class="o">.</span><span class="n">track_ids</span>  <span class="c1"># Load Mridangam IDs</span>
 <span class="n">mridangam_data</span> <span class="o">=</span> <span class="n">mridangam_stroke</span><span class="o">.</span><span class="n">load_tracks</span><span class="p">()</span>  <span class="c1"># Load Mridangam data</span>
-
-<span class="n">mridangam_data</span><span class="p">[</span><span class="n">mridangam_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>  <span class="c1"># Visualize a single track</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Track(
-  audio_path=&quot;...mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224030__akshaylaya__bheem-b-001.wav&quot;,
-  stroke_name=&quot;bheem&quot;,
-  tonic=&quot;B&quot;,
-  track_id=&quot;224030&quot;,
-  audio: The track&#39;s audio
-
-        Returns,
-)
 </pre></div>
 </div>
 </div>
@@ -449,13 +472,6 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mridangam_ids</span><span class="p">:</span>
     <span class="n">stroke_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mridangam_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">stroke_name</span><span class="p">)</span>
 <span class="n">stroke_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">stroke_names</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">stroke_names</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;bheem&#39; &#39;cha&#39; &#39;dheem&#39; &#39;dhin&#39; &#39;num&#39; &#39;ta&#39; &#39;tha&#39; &#39;tham&#39; &#39;thi&#39; &#39;thom&#39;]
 </pre></div>
 </div>
 </div>
@@ -466,61 +482,6 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 <span class="n">stroke_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">stroke_names</span><span class="p">}</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mridangam_ids</span><span class="p">:</span>
     <span class="n">stroke_dict</span><span class="p">[</span><span class="n">mridangam_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">stroke_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mridangam_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">audio_path</span><span class="p">)</span>
-
-<span class="n">stroke_dict</span><span class="p">[</span><span class="s1">&#39;bheem&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224030__akshaylaya__bheem-b-001.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224031__akshaylaya__bheem-b-002.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224032__akshaylaya__bheem-b-003.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224033__akshaylaya__bheem-b-004.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/B/224034__akshaylaya__bheem-b-005.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C/225356__akshaylaya__bheem-c-001.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C/225357__akshaylaya__bheem-c-002.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C/225358__akshaylaya__bheem-c-003.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/C#/226488__akshaylaya__bheem-csh-001.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228625__akshaylaya__bheem-dsh-001.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228626__akshaylaya__bheem-dsh-002.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228627__akshaylaya__bheem-dsh-003.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228628__akshaylaya__bheem-dsh-004.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228629__akshaylaya__bheem-dsh-005.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228630__akshaylaya__bheem-dsh-006.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228631__akshaylaya__bheem-dsh-007.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228632__akshaylaya__bheem-dsh-008.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228633__akshaylaya__bheem-dsh-009.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228634__akshaylaya__bheem-dsh-010.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228635__akshaylaya__bheem-dsh-011.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228636__akshaylaya__bheem-dsh-012.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228637__akshaylaya__bheem-dsh-013.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228638__akshaylaya__bheem-dsh-014.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/D#/228639__akshaylaya__bheem-dsh-015.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230136__akshaylaya__bheem-e-001.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230137__akshaylaya__bheem-e-002.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230138__akshaylaya__bheem-e-003.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230139__akshaylaya__bheem-e-004.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230140__akshaylaya__bheem-e-005.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230141__akshaylaya__bheem-e-006.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230142__akshaylaya__bheem-e-007.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230143__akshaylaya__bheem-e-008.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230144__akshaylaya__bheem-e-009.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230145__akshaylaya__bheem-e-010.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230146__akshaylaya__bheem-e-011.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230147__akshaylaya__bheem-e-012.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230148__akshaylaya__bheem-e-013.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230149__akshaylaya__bheem-e-014.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230150__akshaylaya__bheem-e-015.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230151__akshaylaya__bheem-e-016.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230152__akshaylaya__bheem-e-017.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230153__akshaylaya__bheem-e-018.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230154__akshaylaya__bheem-e-019.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230155__akshaylaya__bheem-e-020.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230156__akshaylaya__bheem-e-021.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230157__akshaylaya__bheem-e-022.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230158__akshaylaya__bheem-e-023.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230159__akshaylaya__bheem-e-024.wav&#39;,
- &#39;/Volumes/storessd/Users/mariusmiron/mir_datasets/mridangam_stroke/mridangam_stroke_1.5/E/230160__akshaylaya__bheem-e-025.wav&#39;]
 </pre></div>
 </div>
 </div>
@@ -529,32 +490,6 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 <div class="section" id="feature-extraction">
 <h2>Feature extraction<a class="headerlink" href="#feature-extraction" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Raw-data preprocess analysis parameters</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">mridangam_data</span><span class="p">[</span><span class="n">mridangam_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">audio</span>
-
-<span class="n">num_strokes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stroke_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Plot waveforms of random samples of each stroke type...&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">num_strokes</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="n">file_ind_inlist</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># 0: let&#39;s take the first file in the list for sample plots</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">stroke</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stroke_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-    <span class="n">sample_file</span> <span class="o">=</span> <span class="n">stroke_dict</span><span class="p">[</span><span class="n">stroke</span><span class="p">][</span><span class="n">file_ind_inlist</span><span class="p">]</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">ess</span><span class="o">.</span><span class="n">MonoLoader</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">sample_file</span><span class="p">,</span> <span class="n">sampleRate</span> <span class="o">=</span> <span class="n">fs</span><span class="p">)()</span>
-    
-    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_strokes</span><span class="p">,(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">stroke</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Plot waveforms of random samples of each stroke type...
-</pre></div>
-</div>
-<img alt="../_images/Feature_extraction_classification_11_1.png" src="../_images/Feature_extraction_classification_11_1.png" />
-</div>
-</div>
 <div class="section" id="preprocessing-of-raw-data-segmentation-splitting-alignment">
 <h3>Preprocessing of raw data: Segmentation, splitting, alignment,…<a class="headerlink" href="#preprocessing-of-raw-data-segmentation-splitting-alignment" title="Permalink to this headline">¶</a></h3>
 <p>While common preprocessing steps (such as amplitude normalisation) exist, there is often some dataset and task specific preprocessing tasks required for grouping, cleaning, and format change.</p>
@@ -565,6 +500,9 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 <span class="n">windowSize</span> <span class="o">=</span> <span class="mi">1024</span>
 <span class="n">hopSize</span> <span class="o">=</span> <span class="mi">512</span>
 <span class="n">NRG_threshold_ratio</span> <span class="o">=</span> <span class="mf">0.005</span> <span class="c1">#threshold expressed as ratio with respect to the maximum value</span>
+<span class="c1"># Raw-data preprocess analysis parameters</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">mridangam_data</span><span class="p">[</span><span class="n">mridangam_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">audio</span>
+<span class="n">num_strokes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stroke_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="c1">#Let&#39;s put in a container to be able to use as a single argument in function calls</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fs&quot;</span><span class="p">:</span><span class="n">fs</span><span class="p">,</span> <span class="s2">&quot;windowSize&quot;</span><span class="p">:</span><span class="n">windowSize</span><span class="p">,</span> <span class="s2">&quot;hopSize&quot;</span><span class="p">:</span><span class="n">hopSize</span><span class="p">,</span> <span class="s2">&quot;NRG_threshold_ratio&quot;</span><span class="p">:</span> <span class="n">NRG_threshold_ratio</span><span class="p">}</span>
 </pre></div>
@@ -629,12 +567,12 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample plots for waveform versus energy and splits based on energy threshold
 </pre></div>
 </div>
-<img alt="../_images/Feature_extraction_classification_16_1.png" src="../_images/Feature_extraction_classification_16_1.png" />
+<img alt="../_images/Feature_extraction_classification_14_1.png" src="../_images/Feature_extraction_classification_14_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">main_data_dir</span> <span class="o">=</span> <span class="s1">&#39;/content&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">main_data_dir</span> <span class="o">=</span> <span class="n">tempdir</span>
 <span class="n">segments_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">main_data_dir</span><span class="p">,</span><span class="s1">&#39;segments&#39;</span><span class="p">)</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">segments_dir</span><span class="p">):</span> <span class="c1">#creating the directory</span>
     <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">segments_dir</span><span class="p">)</span>
@@ -662,16 +600,7 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">4</span><span class="n">c5cff46d2de</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">segments_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">main_data_dir</span><span class="p">,</span><span class="s1">&#39;segments&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">segments_dir</span><span class="p">):</span> <span class="c1">#creating the directory</span>
-<span class="ne">----&gt; </span><span class="mi">4</span>     <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">segments_dir</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> 
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">segment_files</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/content/segments&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6854 segment files created
 </pre></div>
 </div>
 </div>
@@ -719,7 +648,7 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extracting features and writing in data.csv file in the segments folder</span>
 <span class="c1">#  each line in the data.csv file represents a sample with features and the class information as the last element</span>
-<span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;/content/data.csv&#39;</span>
+<span class="n">data_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
 <span class="n">file_count</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
     <span class="c1">#adding column names as the first line in csv</span>
@@ -744,16 +673,399 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/bheem-dsh-014.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>40 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/bheem-e-019.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>60 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-b-015.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>80 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-b-037.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-c-002.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>120 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-c-023.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>140 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-c-045.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>160 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-csh-022.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>180 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-csh-052.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>200 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-d-019.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>220 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-d-040.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>240 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-dsh-001.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>260 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-dsh-021.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>280 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-dsh-042.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>300 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-e-013.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>320 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-e-033.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>340 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/cha-e-053.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>360 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-b-022.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>380 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-b-042.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>400 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-b-062.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>420 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-b-083.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>440 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-b-112.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>460 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-c-005.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>480 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-c-025.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>500 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-c-045.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>520 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-c-065.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>540 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-c-085.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>560 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-csh-020.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>580 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-csh-042.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>600 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-csh-063.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>620 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-d-006.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>640 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-dsh-014.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>660 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-dsh-034.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>680 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-dsh-054.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>700 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-dsh-075.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>720 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-dsh-095.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>740 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-e-004.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>760 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-e-024.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>780 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dheem-e-044.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>800 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-b-013.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>820 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-b-041.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>840 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-c-026.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>860 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-csh-053.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>880 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-dsh-013.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>900 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-dsh-033.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>920 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-dsh-053.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>940 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-dsh-074.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>960 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-dsh-095.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>980 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-dsh-115.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1000 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-dsh-135.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1020 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-dsh-155.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1040 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-dsh-175.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1060 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-dsh-195.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1080 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-e-017.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1100 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-e-037.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1120 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-e-057.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1140 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-e-077.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1160 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/dhin-e-097.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1180 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-b-004.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1200 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-b-024.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1220 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-b-048.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1240 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-b-073.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1260 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-c-012.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1280 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-c-032.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1300 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-c-052.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1320 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-c-073.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1340 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-c-095.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1360 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-csh-018.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1380 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-csh-038.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1400 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-csh-058.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1420 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-csh-081.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1440 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-d-004.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1460 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-dsh-006.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1480 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-dsh-026.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1500 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-dsh-046.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1520 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-dsh-066.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1540 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-dsh-086.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1560 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-dsh-106.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1580 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-dsh-126.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1600 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-e-003.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1620 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-e-023.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1640 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/num-e-044.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1660 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-b-004.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1680 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-b-024.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1700 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-b-044.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1720 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-b-064.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1740 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-b-084.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1760 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-b-104.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1780 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-b-124.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1800 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-b-144.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1820 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-c-019.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1840 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-c-039.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1860 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-c-059.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1880 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-c-079.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1900 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-c-099.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1920 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-c-119.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1940 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-c-139.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1960 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-c-159.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1980 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-csh-014.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2000 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-csh-035.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2020 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-csh-056.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2040 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-csh-076.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2060 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-csh-096.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2080 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-csh-116.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2100 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-csh-137.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2120 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-csh-157.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2140 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-csh-178.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2160 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-csh-198.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2180 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-d-001.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2200 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-d-021.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2220 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-d-041.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2240 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-d-061.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2260 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-d-082.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2280 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-d-102.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2300 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-d-122.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2320 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-d-144.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2340 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-d-164.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2360 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-dsh-004.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2380 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-dsh-024.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2400 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-dsh-044.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2420 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-dsh-064.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2440 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-dsh-084.wav
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2460 files processed, current file:  /var/folders/y_/ty3y7s254tv3x9dkvh7tkn0m0000gn/T/segments/ta-dsh-105.wav
+</pre></div>
+</div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="mi">2</span><span class="n">c4fda01ce40</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">data_file</span> <span class="o">=</span> <span class="s1">&#39;/content/data.csv&#39;</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">file_count</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="c1">#adding column names as the first line in csv</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="n">line2write</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">scalar_lowlevel_descriptors</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;stroke&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;lowlevel.&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">13</span><span class="o">-</span><span class="mi">226450409</span><span class="n">c61</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span>                                                       <span class="n">lowlevelFrameSize</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span>                                                       <span class="n">lowlevelHopSize</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>
+<span class="ne">---&gt; </span><span class="mi">18</span>                                                       <span class="n">lowlevelStats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;stdev&#39;</span><span class="p">])(</span><span class="n">filename</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span>         <span class="n">selected_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">[</span><span class="n">descriptor</span><span class="p">]</span> <span class="k">for</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="n">scalar_lowlevel_descriptors</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span>         <span class="n">label</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/content/data.csv&#39;
+<span class="nn">/usr/local/lib/python3.8/site-packages/essentia/standard.py</span> in <span class="ni">__call__</span><span class="nt">(self, *args)</span>
+<span class="g g-Whitespace">    </span><span class="mi">121</span> 
+<span class="g g-Whitespace">    </span><span class="mi">122</span>         <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">123</span>             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">124</span> 
+<span class="g g-Whitespace">    </span><span class="mi">125</span>         <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="nn">/usr/local/lib/python3.8/site-packages/essentia/standard.py</span> in <span class="ni">compute</span><span class="nt">(self, *args)</span>
+<span class="g g-Whitespace">    </span><span class="mi">102</span>                 <span class="n">convertedArgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convertedData</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">103</span> 
+<span class="ne">--&gt; </span><span class="mi">104</span>             <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compute__</span><span class="p">(</span><span class="o">*</span><span class="n">convertedArgs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">105</span> 
+<span class="g g-Whitespace">    </span><span class="mi">106</span>             <span class="c1"># we have to make an exceptional case for YamlInput, because we need</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>
@@ -769,68 +1081,532 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">15</span><span class="o">-</span><span class="n">e01ca5a02bed</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#Read data with pandas module</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> 
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1">#Plot first lines of our data</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, dialect, error_bad_lines, warn_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">608</span>     <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">609</span> 
-<span class="ne">--&gt; </span><span class="mi">610</span>     <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">611</span> 
-<span class="g g-Whitespace">    </span><span class="mi">612</span> 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
-<span class="g g-Whitespace">    </span><span class="mi">460</span> 
-<span class="g g-Whitespace">    </span><span class="mi">461</span>     <span class="c1"># Create the parser.</span>
-<span class="ne">--&gt; </span><span class="mi">462</span>     <span class="n">parser</span> <span class="o">=</span> <span class="n">TextFileReader</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">463</span> 
-<span class="g g-Whitespace">    </span><span class="mi">464</span>     <span class="k">if</span> <span class="n">chunksize</span> <span class="ow">or</span> <span class="n">iterator</span><span class="p">:</span>
-
-<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">__init__</span><span class="nt">(self, f, engine, **kwds)</span>
-<span class="g g-Whitespace">    </span><span class="mi">817</span>             <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">818</span> 
-<span class="ne">--&gt; </span><span class="mi">819</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">820</span> 
-<span class="g g-Whitespace">    </span><span class="mi">821</span>     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">_make_engine</span><span class="nt">(self, engine)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1048</span>             <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1049</span>         <span class="c1"># error: Too many arguments for &quot;ParserBase&quot;</span>
-<span class="ne">-&gt; </span><span class="mi">1050</span>         <span class="k">return</span> <span class="n">mapping</span><span class="p">[</span><span class="n">engine</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
-<span class="g g-Whitespace">   </span><span class="mi">1051</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1052</span>     <span class="k">def</span> <span class="nf">_failover_to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">__init__</span><span class="nt">(self, src, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1865</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1866</span>         <span class="c1"># open handles</span>
-<span class="ne">-&gt; </span><span class="mi">1867</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_open_handles</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1868</span>         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-<span class="g g-Whitespace">   </span><span class="mi">1869</span>         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">,</span> <span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="s2">&quot;memory_map&quot;</span><span class="p">,</span> <span class="s2">&quot;compression&quot;</span><span class="p">):</span>
-
-<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/parsers.py</span> in <span class="ni">_open_handles</span><span class="nt">(self, src, kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1366</span>             <span class="n">compression</span><span class="o">=</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-<span class="g g-Whitespace">   </span><span class="mi">1367</span>             <span class="n">memory_map</span><span class="o">=</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memory_map&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
-<span class="ne">-&gt; </span><span class="mi">1368</span>             <span class="n">storage_options</span><span class="o">=</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-<span class="g g-Whitespace">   </span><span class="mi">1369</span>         <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1370</span> 
-
-<span class="nn">~/opt/miniconda3/envs/startpack/lib/python3.7/site-packages/pandas/io/common.py</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">645</span>                 <span class="n">encoding</span><span class="o">=</span><span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">646</span>                 <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span>
-<span class="ne">--&gt; </span><span class="mi">647</span>                 <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">648</span>             <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">649</span>         <span class="k">else</span><span class="p">:</span>
-
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/content/data.csv&#39;
-</pre></div>
-</div>
-</div>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>average_loudness</th>
+      <th>barkbands_crest.mean</th>
+      <th>barkbands_crest.stdev</th>
+      <th>barkbands_flatness_db.mean</th>
+      <th>barkbands_flatness_db.stdev</th>
+      <th>barkbands_kurtosis.mean</th>
+      <th>barkbands_kurtosis.stdev</th>
+      <th>barkbands_skewness.mean</th>
+      <th>barkbands_skewness.stdev</th>
+      <th>barkbands_spread.mean</th>
+      <th>barkbands_spread.stdev</th>
+      <th>dissonance.mean</th>
+      <th>dissonance.stdev</th>
+      <th>dynamic_complexity</th>
+      <th>erbbands_crest.mean</th>
+      <th>erbbands_crest.stdev</th>
+      <th>erbbands_flatness_db.mean</th>
+      <th>erbbands_flatness_db.stdev</th>
+      <th>erbbands_kurtosis.mean</th>
+      <th>erbbands_kurtosis.stdev</th>
+      <th>erbbands_skewness.mean</th>
+      <th>erbbands_skewness.stdev</th>
+      <th>erbbands_spread.mean</th>
+      <th>erbbands_spread.stdev</th>
+      <th>hfc.mean</th>
+      <th>hfc.stdev</th>
+      <th>loudness_ebu128.integrated</th>
+      <th>loudness_ebu128.loudness_range</th>
+      <th>loudness_ebu128.momentary.mean</th>
+      <th>loudness_ebu128.momentary.stdev</th>
+      <th>loudness_ebu128.short_term.mean</th>
+      <th>loudness_ebu128.short_term.stdev</th>
+      <th>melbands_crest.mean</th>
+      <th>melbands_crest.stdev</th>
+      <th>melbands_flatness_db.mean</th>
+      <th>melbands_flatness_db.stdev</th>
+      <th>melbands_kurtosis.mean</th>
+      <th>melbands_kurtosis.stdev</th>
+      <th>melbands_skewness.mean</th>
+      <th>melbands_skewness.stdev</th>
+      <th>...</th>
+      <th>silence_rate_20dB.stdev</th>
+      <th>silence_rate_30dB.mean</th>
+      <th>silence_rate_30dB.stdev</th>
+      <th>silence_rate_60dB.mean</th>
+      <th>silence_rate_60dB.stdev</th>
+      <th>spectral_centroid.mean</th>
+      <th>spectral_centroid.stdev</th>
+      <th>spectral_complexity.mean</th>
+      <th>spectral_complexity.stdev</th>
+      <th>spectral_decrease.mean</th>
+      <th>spectral_decrease.stdev</th>
+      <th>spectral_energy.mean</th>
+      <th>spectral_energy.stdev</th>
+      <th>spectral_energyband_high.mean</th>
+      <th>spectral_energyband_high.stdev</th>
+      <th>spectral_energyband_low.mean</th>
+      <th>spectral_energyband_low.stdev</th>
+      <th>spectral_energyband_middle_high.mean</th>
+      <th>spectral_energyband_middle_high.stdev</th>
+      <th>spectral_energyband_middle_low.mean</th>
+      <th>spectral_energyband_middle_low.stdev</th>
+      <th>spectral_entropy.mean</th>
+      <th>spectral_entropy.stdev</th>
+      <th>spectral_flux.mean</th>
+      <th>spectral_flux.stdev</th>
+      <th>spectral_kurtosis.mean</th>
+      <th>spectral_kurtosis.stdev</th>
+      <th>spectral_rms.mean</th>
+      <th>spectral_rms.stdev</th>
+      <th>spectral_rolloff.mean</th>
+      <th>spectral_rolloff.stdev</th>
+      <th>spectral_skewness.mean</th>
+      <th>spectral_skewness.stdev</th>
+      <th>spectral_spread.mean</th>
+      <th>spectral_spread.stdev</th>
+      <th>spectral_strongpeak.mean</th>
+      <th>spectral_strongpeak.stdev</th>
+      <th>zerocrossingrate.mean</th>
+      <th>zerocrossingrate.stdev</th>
+      <th>stroke</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.990684</td>
+      <td>15.045286</td>
+      <td>1.854457</td>
+      <td>0.372195</td>
+      <td>0.078171</td>
+      <td>155.698410</td>
+      <td>116.191475</td>
+      <td>7.763121</td>
+      <td>2.870029</td>
+      <td>1.459613</td>
+      <td>1.988782</td>
+      <td>0.384449</td>
+      <td>0.035729</td>
+      <td>3.081390</td>
+      <td>23.001263</td>
+      <td>6.743838</td>
+      <td>0.259211</td>
+      <td>0.051726</td>
+      <td>18.463203</td>
+      <td>18.154703</td>
+      <td>3.524484</td>
+      <td>2.027169</td>
+      <td>14.154247</td>
+      <td>9.713717</td>
+      <td>3.785260</td>
+      <td>5.626436</td>
+      <td>-17.972549</td>
+      <td>0.0</td>
+      <td>-18.916914</td>
+      <td>2.906923</td>
+      <td>-23.871981</td>
+      <td>0.0</td>
+      <td>22.157772</td>
+      <td>2.388509</td>
+      <td>0.508498</td>
+      <td>0.089175</td>
+      <td>110.114670</td>
+      <td>49.826588</td>
+      <td>5.980231</td>
+      <td>1.438695</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.269231</td>
+      <td>0.443560</td>
+      <td>177.982590</td>
+      <td>79.151657</td>
+      <td>3.384615</td>
+      <td>3.991115</td>
+      <td>-5.029452e-09</td>
+      <td>6.021744e-09</td>
+      <td>0.019326</td>
+      <td>0.023204</td>
+      <td>0.000011</td>
+      <td>0.000035</td>
+      <td>0.016561</td>
+      <td>0.018647</td>
+      <td>0.000400</td>
+      <td>0.001060</td>
+      <td>0.008619</td>
+      <td>0.011005</td>
+      <td>5.166698</td>
+      <td>0.773860</td>
+      <td>0.031672</td>
+      <td>0.052147</td>
+      <td>28.880934</td>
+      <td>9.020713</td>
+      <td>0.003634</td>
+      <td>0.002377</td>
+      <td>184.688629</td>
+      <td>104.330238</td>
+      <td>4.505211</td>
+      <td>0.720354</td>
+      <td>3449997.75</td>
+      <td>2149743.75</td>
+      <td>0.623849</td>
+      <td>0.403493</td>
+      <td>0.008395</td>
+      <td>0.002812</td>
+      <td>bheem</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.990684</td>
+      <td>14.898280</td>
+      <td>2.280415</td>
+      <td>0.391228</td>
+      <td>0.083327</td>
+      <td>133.322479</td>
+      <td>80.732307</td>
+      <td>6.428464</td>
+      <td>1.788766</td>
+      <td>1.242456</td>
+      <td>2.026722</td>
+      <td>0.385100</td>
+      <td>0.022905</td>
+      <td>4.722807</td>
+      <td>24.075768</td>
+      <td>6.496977</td>
+      <td>0.277370</td>
+      <td>0.058520</td>
+      <td>29.212107</td>
+      <td>24.449263</td>
+      <td>4.452918</td>
+      <td>2.262118</td>
+      <td>10.936172</td>
+      <td>10.461652</td>
+      <td>4.415651</td>
+      <td>5.037334</td>
+      <td>-15.419962</td>
+      <td>0.0</td>
+      <td>-15.889473</td>
+      <td>2.056010</td>
+      <td>-22.573931</td>
+      <td>0.0</td>
+      <td>21.784616</td>
+      <td>2.784943</td>
+      <td>0.527868</td>
+      <td>0.094261</td>
+      <td>99.897247</td>
+      <td>43.619888</td>
+      <td>5.009456</td>
+      <td>1.415897</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.950000</td>
+      <td>0.217945</td>
+      <td>0.200000</td>
+      <td>0.400000</td>
+      <td>160.514008</td>
+      <td>44.933578</td>
+      <td>3.050000</td>
+      <td>3.338787</td>
+      <td>-7.063661e-09</td>
+      <td>7.256550e-09</td>
+      <td>0.027060</td>
+      <td>0.027833</td>
+      <td>0.000003</td>
+      <td>0.000006</td>
+      <td>0.024027</td>
+      <td>0.023854</td>
+      <td>0.000197</td>
+      <td>0.000440</td>
+      <td>0.011819</td>
+      <td>0.012786</td>
+      <td>4.916273</td>
+      <td>0.704710</td>
+      <td>0.040183</td>
+      <td>0.057602</td>
+      <td>35.628502</td>
+      <td>11.007059</td>
+      <td>0.004391</td>
+      <td>0.002669</td>
+      <td>170.112305</td>
+      <td>54.856857</td>
+      <td>5.026465</td>
+      <td>0.800214</td>
+      <td>3145255.50</td>
+      <td>2228094.00</td>
+      <td>0.763095</td>
+      <td>0.469566</td>
+      <td>0.006445</td>
+      <td>0.001386</td>
+      <td>bheem</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.990684</td>
+      <td>14.472402</td>
+      <td>2.531276</td>
+      <td>0.355560</td>
+      <td>0.088243</td>
+      <td>104.285133</td>
+      <td>69.695946</td>
+      <td>5.909654</td>
+      <td>2.103197</td>
+      <td>1.706020</td>
+      <td>2.225517</td>
+      <td>0.368965</td>
+      <td>0.042397</td>
+      <td>0.000000</td>
+      <td>21.715366</td>
+      <td>7.841555</td>
+      <td>0.253213</td>
+      <td>0.056765</td>
+      <td>18.648695</td>
+      <td>16.467173</td>
+      <td>3.559798</td>
+      <td>1.866340</td>
+      <td>13.307286</td>
+      <td>11.045646</td>
+      <td>5.321993</td>
+      <td>6.361315</td>
+      <td>-14.960384</td>
+      <td>0.0</td>
+      <td>-14.960384</td>
+      <td>0.000000</td>
+      <td>-23.710999</td>
+      <td>0.0</td>
+      <td>20.911642</td>
+      <td>3.709286</td>
+      <td>0.488403</td>
+      <td>0.096959</td>
+      <td>102.251648</td>
+      <td>60.140495</td>
+      <td>5.307984</td>
+      <td>1.535789</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.214286</td>
+      <td>0.410326</td>
+      <td>180.786880</td>
+      <td>69.366158</td>
+      <td>2.928571</td>
+      <td>2.939006</td>
+      <td>-7.304727e-09</td>
+      <td>6.862479e-09</td>
+      <td>0.028052</td>
+      <td>0.026443</td>
+      <td>0.000010</td>
+      <td>0.000027</td>
+      <td>0.022770</td>
+      <td>0.019730</td>
+      <td>0.000253</td>
+      <td>0.000508</td>
+      <td>0.013326</td>
+      <td>0.014265</td>
+      <td>5.363946</td>
+      <td>0.839481</td>
+      <td>0.055734</td>
+      <td>0.068736</td>
+      <td>27.409437</td>
+      <td>9.399188</td>
+      <td>0.004501</td>
+      <td>0.002667</td>
+      <td>184.570312</td>
+      <td>67.465721</td>
+      <td>4.368257</td>
+      <td>0.802403</td>
+      <td>4535479.50</td>
+      <td>5375152.00</td>
+      <td>0.743537</td>
+      <td>0.436122</td>
+      <td>0.005964</td>
+      <td>0.001557</td>
+      <td>bheem</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.990684</td>
+      <td>15.161849</td>
+      <td>1.408289</td>
+      <td>0.372373</td>
+      <td>0.072589</td>
+      <td>196.814804</td>
+      <td>126.745842</td>
+      <td>8.861809</td>
+      <td>3.526605</td>
+      <td>1.458768</td>
+      <td>2.069885</td>
+      <td>0.382804</td>
+      <td>0.026602</td>
+      <td>5.379347</td>
+      <td>22.982801</td>
+      <td>6.337996</td>
+      <td>0.258865</td>
+      <td>0.047681</td>
+      <td>26.654076</td>
+      <td>21.613844</td>
+      <td>4.136274</td>
+      <td>2.181055</td>
+      <td>11.937102</td>
+      <td>10.046105</td>
+      <td>3.359879</td>
+      <td>5.490990</td>
+      <td>-21.564079</td>
+      <td>0.0</td>
+      <td>-23.425644</td>
+      <td>4.135911</td>
+      <td>-26.239792</td>
+      <td>0.0</td>
+      <td>21.981190</td>
+      <td>1.877216</td>
+      <td>0.514171</td>
+      <td>0.084506</td>
+      <td>95.676468</td>
+      <td>36.759228</td>
+      <td>5.083558</td>
+      <td>1.296833</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.962963</td>
+      <td>0.188853</td>
+      <td>0.333333</td>
+      <td>0.471404</td>
+      <td>178.308121</td>
+      <td>85.019371</td>
+      <td>3.407408</td>
+      <td>3.519884</td>
+      <td>-4.513393e-09</td>
+      <td>6.114628e-09</td>
+      <td>0.017339</td>
+      <td>0.023562</td>
+      <td>0.000010</td>
+      <td>0.000033</td>
+      <td>0.014859</td>
+      <td>0.018601</td>
+      <td>0.000406</td>
+      <td>0.001066</td>
+      <td>0.007449</td>
+      <td>0.010630</td>
+      <td>5.174582</td>
+      <td>0.792426</td>
+      <td>0.030172</td>
+      <td>0.053116</td>
+      <td>31.291861</td>
+      <td>10.591228</td>
+      <td>0.003364</td>
+      <td>0.002366</td>
+      <td>176.253250</td>
+      <td>93.040909</td>
+      <td>4.677686</td>
+      <td>0.927602</td>
+      <td>3632668.25</td>
+      <td>3444228.50</td>
+      <td>0.574670</td>
+      <td>0.406087</td>
+      <td>0.008301</td>
+      <td>0.001870</td>
+      <td>bheem</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.990684</td>
+      <td>17.659487</td>
+      <td>2.969296</td>
+      <td>0.421759</td>
+      <td>0.078647</td>
+      <td>202.105255</td>
+      <td>124.588768</td>
+      <td>7.508127</td>
+      <td>2.379026</td>
+      <td>0.917102</td>
+      <td>1.301628</td>
+      <td>0.372937</td>
+      <td>0.028231</td>
+      <td>3.281258</td>
+      <td>25.641979</td>
+      <td>6.193751</td>
+      <td>0.306016</td>
+      <td>0.058924</td>
+      <td>46.865616</td>
+      <td>34.723438</td>
+      <td>5.547699</td>
+      <td>2.647828</td>
+      <td>8.501044</td>
+      <td>8.878104</td>
+      <td>4.128752</td>
+      <td>5.205629</td>
+      <td>-16.048725</td>
+      <td>0.0</td>
+      <td>-16.853645</td>
+      <td>2.720854</td>
+      <td>-22.190325</td>
+      <td>0.0</td>
+      <td>26.977427</td>
+      <td>3.878409</td>
+      <td>0.552943</td>
+      <td>0.085468</td>
+      <td>120.056412</td>
+      <td>45.530270</td>
+      <td>5.087247</td>
+      <td>1.696426</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.259259</td>
+      <td>0.438228</td>
+      <td>172.362991</td>
+      <td>53.978916</td>
+      <td>2.518518</td>
+      <td>3.414245</td>
+      <td>-6.146738e-09</td>
+      <td>6.867481e-09</td>
+      <td>0.023574</td>
+      <td>0.026375</td>
+      <td>0.000005</td>
+      <td>0.000012</td>
+      <td>0.019684</td>
+      <td>0.021820</td>
+      <td>0.000250</td>
+      <td>0.000610</td>
+      <td>0.016270</td>
+      <td>0.018086</td>
+      <td>4.706660</td>
+      <td>1.010753</td>
+      <td>0.030044</td>
+      <td>0.050586</td>
+      <td>32.262341</td>
+      <td>12.790809</td>
+      <td>0.004004</td>
+      <td>0.002639</td>
+      <td>161.100266</td>
+      <td>41.178917</td>
+      <td>4.705678</td>
+      <td>1.029619</td>
+      <td>4010335.00</td>
+      <td>5413284.00</td>
+      <td>0.739857</td>
+      <td>0.500096</td>
+      <td>0.007650</td>
+      <td>0.003042</td>
+      <td>bheem</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 85 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -841,16 +1617,10 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">16</span><span class="o">-</span><span class="n">e16dfb345453</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Take two random features and plot the sample points</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">sns</span><span class="o">.</span><span class="n">relplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;melbands_flatness_db.mean&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;spectral_centroid.mean&quot;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;stroke&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">);</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;seaborn&#39;
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: NumExpr defaulting to 2 threads.
 </pre></div>
 </div>
+<img alt="../_images/Feature_extraction_classification_22_1.png" src="../_images/Feature_extraction_classification_22_1.png" />
 </div>
 </div>
 </div>
@@ -867,20 +1637,6 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">17</span><span class="o">-</span><span class="mi">8</span><span class="n">f60691fb04e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">data_modif</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> 
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1">#Let&#39;s use sklearn&#39;s preprocessing tools for applying normalisation to features</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">min_max_scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span>
-
-<span class="ne">NameError</span>: name &#39;data&#39; is not defined
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -890,13 +1646,17 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">18</span><span class="o">-</span><span class="n">e1a7cd2d0d6c</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Checking if our data is balanced (if not, we should balance it to prevent our model to be baised)</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-
-<span class="ne">NameError</span>: name &#39;data_modif&#39; is not defined
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>thi      2161
+tha      1146
+ta        921
+thom      613
+num       480
+dheem     450
+dhin      386
+tham      357
+cha       294
+bheem      46
+Name: stroke, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -923,16 +1683,17 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">19</span><span class="o">-</span><span class="mi">57</span><span class="n">b63456d1ae</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Here we didn&#39;t pick the lowest number, 49 for bheem, which is too small. Instead, we choose the 330 of &quot;cha&quot;</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">min_number</span> <span class="o">=</span> <span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[</span><span class="s1">&#39;cha&#39;</span><span class="p">]</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">thi_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;thi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">tha_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;tha&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">ta_data</span> <span class="o">=</span> <span class="n">data_modif</span><span class="p">[</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">==</span> <span class="s1">&#39;ta&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="n">min_number</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;data_modif&#39; is not defined
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tha      294
+thi      294
+tham     294
+ta       294
+dheem    294
+dhin     294
+num      294
+cha      294
+thom     294
+bheem     46
+Name: stroke, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -946,8 +1707,8 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 <p>##Training a classifier</p>
 </div>
-<div class="section" id="supervised-learning-approach-support-vector-machines">
-<h3>Supervised learning approach (Support Vector Machines)<a class="headerlink" href="#supervised-learning-approach-support-vector-machines" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="support-vector-machine">
+<h3>Support Vector Machine<a class="headerlink" href="#support-vector-machine" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Input values put in a matrix, there are 84 features</span>
@@ -962,16 +1723,21 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">21</span><span class="o">-</span><span class="mi">8</span><span class="n">f33d04bb727</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Input values put in a matrix, there are 84 features</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">X</span> <span class="o">=</span> <span class="n">data_modif</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">84</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Creating output values</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="p">)</span>  <span class="c1"># convert to categorical data</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="p">)</span>  <span class="c1"># create label encoded outputs</span>
-
-<span class="ne">NameError</span>: name &#39;data_modif&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Features of the first sample:  [0.         0.16669803 0.19569333 0.19187305 0.21813181 0.00518465
+ 0.00277292 0.11074965 0.03389682 0.29261579 0.27711622 0.61019934
+ 0.44115533 0.         0.12703365 0.10249303 0.25651655 0.18245836
+ 0.00977359 0.00827198 0.19769223 0.12555338 0.43349396 0.10128644
+ 0.17647126 0.16102995 0.32257256 0.         0.32257256 0.
+ 0.27492107 0.         0.18542482 0.14019162 0.25002372 0.24852188
+ 0.03578908 0.04781622 0.32291146 0.21155403 0.30302373 0.31848565
+ 0.79855294 0.27264357 0.         0.         1.         0.
+ 0.51428571 0.97979593 0.22318307 0.27022523 0.45163884 0.45208968
+ 0.8046493  0.14947107 0.20459315 0.14316509 0.02326046 0.02293771
+ 0.00932192 0.0100157  0.16637874 0.19816178 0.23642542 0.23819592
+ 0.75758891 0.23539464 0.32227111 0.3883777  0.08524024 0.05418312
+ 0.28644568 0.31019266 0.25744742 0.10386354 0.20940889 0.11931316
+ 0.20104476 0.10217799 0.15530405 0.10404513 0.41846153 0.47426487]
+Class of the first sample:  8
 </pre></div>
 </div>
 </div>
@@ -989,16 +1755,8 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">22</span><span class="o">-</span><span class="mi">5007</span><span class="n">dcbc5259</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Let&#39;s split data into test and train sets</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.33</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> 
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Check sizes of input and output vectors</span>
-
-<span class="ne">NameError</span>: name &#39;X&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size of train features matrix:  (1803, 84) , Size of train output vector:  (1803,)
+Size of test features matrix:  (889, 84) , Size of test output vector:  (889,)
 </pre></div>
 </div>
 </div>
@@ -1018,120 +1776,17 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">23</span><span class="o">-</span><span class="n">b6046d3c935b</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> 
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">clf</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVC</span><span class="p">(</span><span class="n">gamma</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">X_train</span><span class="o">.</span><span class="n">var</span><span class="p">()))</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> 
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Fit model with training data</span>
-
-<span class="ne">NameError</span>: name &#39;X_train&#39; is not defined
-</pre></div>
 </div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test the model</span>
-<span class="c1"># Let&#39;s check for each sample in the test set if prediction matches the true class information</span>
-<span class="n">y_test</span> <span class="o">==</span> <span class="n">y_pred</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">24</span><span class="o">-</span><span class="n">f98da4892968</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Test the model</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># Let&#39;s check for each sample in the test set if prediction matches the true class information</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">y_test</span> <span class="o">==</span> <span class="n">y_pred</span>
-
-<span class="ne">NameError</span>: name &#39;y_test&#39; is not defined
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data is balanced, so you can use accuracy as a measure:</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;accuracy: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="n">y_pred</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">25</span><span class="o">-</span><span class="mi">122</span><span class="n">d8a7646f2</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Data is balanced, so you can use accuracy as a measure:</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;accuracy: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="n">y_pred</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">))</span>
-
-<span class="ne">NameError</span>: name &#39;y_test&#39; is not defined
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the confusion matrix</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-
-<span class="n">classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="p">)</span>
-<span class="n">conf_mat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">classes</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">classes</span><span class="p">)</span>
-<span class="n">conf_mat</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Actual&#39;</span>
-<span class="n">conf_mat</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Predicted&#39;</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">conf_mat</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">annot_kws</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">annot</span> <span class="o">=</span> <span class="kc">True</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">26</span><span class="o">-</span><span class="mi">87</span><span class="n">f2f5e44b10</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Print the confusion matrix</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> 
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="p">)</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;seaborn&#39;
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="unsupervised-learning-approach-neural-network">
-<h3>Unsupervised learning approach (Neural Network)<a class="headerlink" href="#unsupervised-learning-approach-neural-network" title="Permalink to this headline">¶</a></h3>
+<p>###Neural Networks</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
 
-<span class="c1"># Let&#39;s start by splitting our data </span>
-<span class="n">X_train_val</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train_val</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.20</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># ..and apply normalisation</span>
-<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_val</span><span class="p">)</span>
-<span class="n">norm_x_train_val</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train_val</span><span class="p">)</span>
-<span class="n">norm_x_test</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">27</span><span class="o">-</span><span class="n">b04e451e559c</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> 
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Let&#39;s start by splitting our data</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">X_train_val</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train_val</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.20</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> 
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># ..and apply normalisation</span>
-
-<span class="ne">NameError</span>: name &#39;X&#39; is not defined
+<span class="c1"># Let&#39;s start by applying normalisation</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">norm_x_train</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">scalertest</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">norm_x_test</span> <span class="o">=</span> <span class="n">scalertest</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1140,24 +1795,16 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
 <span class="n">onehot_encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">y_train_val_onehot</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_train_val</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train_val</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">y_train_onehot</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">y_test_onehot</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One-hot encoded y_train_val shape = &quot;</span><span class="p">,</span> <span class="n">y_train_val_onehot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One-hot encoded y_train shape = &quot;</span><span class="p">,</span> <span class="n">y_train_onehot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One-hot encoded y_test shape = &quot;</span><span class="p">,</span> <span class="n">y_test_onehot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">28</span><span class="o">-</span><span class="mi">01</span><span class="n">b93944c4f9</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">onehot_encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">y_train_val_onehot</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_train_val</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train_val</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">y_test_onehot</span> <span class="o">=</span> <span class="n">onehot_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One-hot encoded y_train_val shape = &quot;</span><span class="p">,</span> <span class="n">y_train_val_onehot</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;y_train_val&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>One-hot encoded y_train shape =  (1803, 10)
+One-hot encoded y_test shape =  (889, 10)
 </pre></div>
 </div>
 </div>
@@ -1192,21 +1839,7 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
     
     <span class="k">return</span> <span class="n">model</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">compose_model</span><span class="p">(</span><span class="n">X_train_val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">29</span><span class="o">-</span><span class="n">ee18191e3d67</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">layers</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> 
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="k">def</span> <span class="nf">compose_model</span><span class="p">(</span><span class="n">num_features</span><span class="p">):</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> 
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;keras&#39;
+<span class="n">model</span> <span class="o">=</span> <span class="n">compose_model</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1218,12 +1851,36 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">30</span><span class="o">-</span><span class="n">e7c0d23d3345</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>  <span class="c1"># Plot summary of the model</span>
-
-<span class="ne">NameError</span>: name &#39;model&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model: &quot;sequential_2&quot;
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+InputLayer (BatchNormalizati (None, 84)                336       
+_________________________________________________________________
+HiddenLayer_1 (Dense)        (None, 40)                3400      
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 40)                160       
+_________________________________________________________________
+activation_6 (Activation)    (None, 40)                0         
+_________________________________________________________________
+dropout_4 (Dropout)          (None, 40)                0         
+_________________________________________________________________
+HiddenLayer_2 (Dense)        (None, 20)                820       
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 20)                80        
+_________________________________________________________________
+activation_7 (Activation)    (None, 20)                0         
+_________________________________________________________________
+dropout_5 (Dropout)          (None, 20)                0         
+_________________________________________________________________
+Output_layer (Dense)         (None, 10)                210       
+_________________________________________________________________
+activation_8 (Activation)    (None, 10)                0         
+=================================================================
+Total params: 5,006
+Trainable params: 4,718
+Non-trainable params: 288
+_________________________________________________________________
 </pre></div>
 </div>
 </div>
@@ -1231,22 +1888,164 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span> <span class="o">=</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span> <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
-<span class="n">summary</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_val</span><span class="p">,</span> <span class="n">y_train_val_onehot</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">summary</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train_onehot</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="evaluation">
+<h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
+<p>To test the model we compare the predictions with the ground truth labels on the examples we set aside for the testing. To that extent, we compute the accuracy of the model on the test set.</p>
+<div class="section" id="id1">
+<h3>Support Vector Machine<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test the model</span>
+<span class="c1"># Let&#39;s check for each sample in the test set if prediction matches the true class information</span>
+<span class="n">y_test</span> <span class="o">==</span> <span class="n">y_pred</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">31</span><span class="o">-</span><span class="n">fffed6c9f97a</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span> <span class="o">=</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span> <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">summary</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_val</span><span class="p">,</span> <span class="n">y_train_val_onehot</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;model&#39; is not defined
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True, False,  True,
+        True,  True,  True,  True, False,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True, False, False,  True,  True,  True,
+        True, False, False, False,  True,  True, False,  True,  True,
+        True,  True,  True,  True,  True,  True, False,  True,  True,
+       False, False,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True, False,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True, False,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True, False,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True, False,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True, False,  True,  True,  True, False,  True,  True,
+        True,  True,  True,  True,  True,  True,  True, False,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True, False,  True,  True, False,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+       False,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True, False,  True,  True, False,  True,  True,
+       False,  True,  True,  True,  True,  True,  True,  True,  True,
+        True, False, False,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True, False,
+       False,  True,  True, False,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True, False,  True,  True,  True,
+       False,  True,  True,  True,  True,  True,  True,  True, False,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+       False,  True, False,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True, False, False,  True,
+        True,  True, False,  True,  True,  True,  True, False,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True, False,  True,  True,  True,  True,  True, False,
+        True,  True,  True,  True, False,  True,  True,  True,  True,
+       False,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True, False,  True,  True,
+        True,  True,  True,  True, False,  True,  True,  True,  True,
+        True, False,  True,  True,  True,  True,  True, False,  True,
+        True,  True, False,  True,  True,  True,  True, False, False,
+        True,  True,  True,  True,  True, False,  True,  True,  True,
+        True,  True,  True, False,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True, False,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True, False,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True, False,  True,  True, False,  True,
+       False,  True,  True,  True, False, False,  True,  True,  True,
+       False,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True, False,  True,  True, False,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True, False,
+        True,  True,  True, False,  True,  True,  True,  True, False,
+        True,  True,  True,  True, False,  True,  True,  True,  True,
+        True,  True, False,  True,  True,  True,  True,  True,  True,
+       False,  True,  True,  True,  True,  True,  True, False,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True, False,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True, False,  True,
+        True,  True,  True, False,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True, False,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True, False,
+        True,  True,  True,  True,  True,  True,  True, False,  True,
+        True,  True, False,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+       False,  True, False,  True,  True,  True,  True,  True,  True,
+       False, False,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+       False,  True,  True,  True,  True,  True, False,  True, False,
+        True,  True,  True,  True,  True,  True,  True,  True, False,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+       False,  True,  True,  True,  True,  True, False,  True,  True,
+        True,  True,  True,  True,  True, False,  True,  True, False,
+        True,  True,  True,  True,  True,  True,  True,  True,  True,
+        True,  True,  True,  True,  True,  True,  True])
 </pre></div>
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data is balanced, so you can use accuracy as a measure:</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;accuracy: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_test</span> <span class="o">==</span> <span class="n">y_pred</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>accuracy:  0.9021372328458943
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print the confusion matrix</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data_modif</span><span class="o">.</span><span class="n">stroke</span><span class="p">)</span>
+<span class="n">conf_mat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">),</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">classes</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">classes</span><span class="p">)</span>
+<span class="n">conf_mat</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Actual&#39;</span>
+<span class="n">conf_mat</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Predicted&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">conf_mat</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">annot_kws</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">},</span> <span class="n">annot</span> <span class="o">=</span> <span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/Feature_extraction_classification_43_0.png" src="../_images/Feature_extraction_classification_43_0.png" />
+</div>
+</div>
+<p>###Neural Networks</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test_onehot</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
@@ -1256,14 +2055,8 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">32</span><span class="o">-</span><span class="mi">750</span><span class="n">b24fcb6a1</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test_onehot</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test loss:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy:&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-<span class="ne">NameError</span>: name &#39;model&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test loss: 0.043769046664237976
+Test accuracy: 0.9313835501670837
 </pre></div>
 </div>
 </div>
@@ -1290,18 +2083,8 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">33</span><span class="o">-</span><span class="mi">557</span><span class="n">c06850d10</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># summarize history for accuracy</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">])</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;model accuracy&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;summary&#39; is not defined
-</pre></div>
-</div>
+<img alt="../_images/Feature_extraction_classification_46_0.png" src="../_images/Feature_extraction_classification_46_0.png" />
+<img alt="../_images/Feature_extraction_classification_46_1.png" src="../_images/Feature_extraction_classification_46_1.png" />
 </div>
 </div>
 </div>
@@ -1334,7 +2117,7 @@ if importlib.util.find_spec(&#39;essentia&#39;) is None:
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="Mridangam_dataset.html" title="previous page">The Mridangam Stroke Dataset</a>
-    <a class='right-next' id="next-link" href="../bibliography.html" title="next page">Bibliography</a>
+    <a class='right-next' id="next-link" href="End_to_end_classification.html" title="next page">End-to-end classification using deep learning on the waveform</a>
 
         </div>
         
