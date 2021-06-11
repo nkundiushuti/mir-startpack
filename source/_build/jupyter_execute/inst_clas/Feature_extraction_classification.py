@@ -4,6 +4,9 @@
 # Feature extraction and classification
 # =====================================
 # 
+# We extract various features from the audio files using essentia and we use these features as input for an [Support Vector Machine (SVM)](https://en.wikipedia.org/wiki/Support-vector_machine) classifier. 
+# 
+# These features are related to the timbre
 
 # ## Instalation of packages
 # 
@@ -30,6 +33,9 @@ import mirdata
 import essentia.standard as ess
 import pandas as pd
 
+# Temporary folder to write features to
+import tempfile
+tempdir = os.getenv("TEST_TMPDIR", tempfile.gettempdir())
 
 
 # ## Data processing
@@ -46,15 +52,11 @@ mridangam_stroke.download()  # download the dataset
 mridangam_stroke.validate()  # validate that all the expected files are there
 
 
-# In the mirdata library the track ids in the dataset can be seen retrieved using the *track_ids* attribute. The *load_tracks* methods loads all the tracks in a dictionary. 
-
 # In[4]:
 
 
 mridangam_ids = mridangam_stroke.track_ids  # Load Mridangam IDs
 mridangam_data = mridangam_stroke.load_tracks()  # Load Mridangam data
-
-mridangam_data[mridangam_ids[0]]  # Visualize a single track
 
 
 # In[5]:
@@ -66,8 +68,6 @@ for i in mridangam_ids:
     stroke_names.append(mridangam_data[i].stroke_name)
 stroke_names = np.unique(stroke_names)
 
-print(stroke_names)
-
 
 # In[6]:
 
@@ -77,29 +77,8 @@ stroke_dict = {item: [] for item in stroke_names}
 for i in mridangam_ids:
     stroke_dict[mridangam_data[i].stroke_name].append(mridangam_data[i].audio_path)
 
-stroke_dict['bheem']
-
 
 # ## Feature extraction 
-
-# In[7]:
-
-
-# Raw-data preprocess analysis parameters
-_, fs = mridangam_data[mridangam_ids[0]].audio
-
-num_strokes = len(stroke_dict.keys())
-print("Plot waveforms of random samples of each stroke type...")
-plt.figure(1, figsize=(5 * num_strokes, 3))
-file_ind_inlist = 0 # 0: let's take the first file in the list for sample plots
-for i, stroke in enumerate(stroke_dict.keys()):
-    sample_file = stroke_dict[stroke][file_ind_inlist]
-    x = ess.MonoLoader(filename = sample_file, sampleRate = fs)()
-    
-    plt.subplot(1,num_strokes,(i+1))
-    plt.plot(x)
-    plt.title(stroke)
-
 
 # ### Preprocessing of raw data: Segmentation, splitting, alignment,... 
 
@@ -107,18 +86,21 @@ for i, stroke in enumerate(stroke_dict.keys()):
 # 
 # In the downloaded dataset, recordings include a sequence of isolated notes played in sequence which could be split into isolated notes. We would like to investigate the option of splitting using a fixed energy threshold (which would help us seperate notes using the silence regions). Let's define a function to perform this operation and visualize some samples to observe the effectiveness of it.
 
-# In[8]:
+# In[7]:
 
 
 # Raw-data preprocess analysis parameters
 windowSize = 1024
 hopSize = 512
 NRG_threshold_ratio = 0.005 #threshold expressed as ratio with respect to the maximum value
+# Raw-data preprocess analysis parameters
+_, fs = mridangam_data[mridangam_ids[0]].audio
+num_strokes = len(stroke_dict.keys())
 #Let's put in a container to be able to use as a single argument in function calls
 params = {"fs":fs, "windowSize":windowSize, "hopSize":hopSize, "NRG_threshold_ratio": NRG_threshold_ratio}
 
 
-# In[9]:
+# In[8]:
 
 
 #Function definition
@@ -147,7 +129,7 @@ def split_file(filename, params):
     return (x, NRG, split_decision_func, start_indexes, stop_indexes)
 
 
-# In[10]:
+# In[9]:
 
 
 num_strokes = len(stroke_names)
@@ -171,10 +153,10 @@ for file_ind_inlist in file_indexes:
 plt.legend(loc="best");
 
 
-# In[11]:
+# In[10]:
 
 
-main_data_dir = '/content'
+main_data_dir = tempdir
 segments_dir = os.path.join(main_data_dir,'segments')
 if not os.path.exists(segments_dir): #creating the directory
     os.mkdir(segments_dir)
@@ -200,7 +182,7 @@ for stroke, files in stroke_dict.items():
 print(len(segment_files),'segment files created')
 
 
-# In[12]:
+# In[11]:
 
 
 #If required, you can use this cell to delete all files in a given folder
@@ -221,7 +203,7 @@ def delete_files_in_dir(dir_name):
 # 
 # Essentia-MusicExtractor extracts a large number of features. For simplicity, let's only keep low-level descriptors which are represented with a single scalar value as our feature set and discard other features.
 
-# In[13]:
+# In[12]:
 
 
 # Print descriptors to be considered
@@ -236,12 +218,12 @@ print("Subset of features to be considered:\n",scalar_lowlevel_descriptors)
 
 # Running musicextractor for all files, keeping a subset of features, writing to an output file: data.csv
 
-# In[14]:
+# In[13]:
 
 
 # Extracting features and writing in data.csv file in the segments folder
 #  each line in the data.csv file represents a sample with features and the class information as the last element
-data_file = '/content/data.csv'
+data_file = os.path.join(tempdir,'data.csv')
 file_count = 0
 with open(data_file, 'w') as writer:
     #adding column names as the first line in csv
@@ -264,7 +246,7 @@ with open(data_file, 'w') as writer:
 print("A total of ", file_count, "files processed")
 
 
-# In[15]:
+# In[34]:
 
 
 #Read data with pandas module
@@ -274,7 +256,7 @@ data = pd.read_csv(data_file)
 data.head()
 
 
-# In[16]:
+# In[35]:
 
 
 # Take two random features and plot the sample points
@@ -285,7 +267,7 @@ sns.relplot(x = "melbands_flatness_db.mean", y = "spectral_centroid.mean", hue =
 # ### Preprocessing of the features
 # 
 
-# In[17]:
+# In[36]:
 
 
 data_modif = data.copy()
@@ -296,14 +278,14 @@ min_max_scaler = preprocessing.MinMaxScaler()
 data_modif.iloc[:,:84] = min_max_scaler.fit_transform(data.iloc[:,:84].values)
 
 
-# In[18]:
+# In[37]:
 
 
 # Checking if our data is balanced (if not, we should balance it to prevent our model to be baised)
 data_modif.stroke.value_counts()
 
 
-# In[19]:
+# In[38]:
 
 
 # Here we didn't pick the lowest number, 49 for bheem, which is too small. Instead, we choose the 330 of "cha"
@@ -324,7 +306,7 @@ data_modif = pd.concat([thi_data, tha_data, ta_data, thom_data, num_data, dhin_d
 data_modif.stroke.value_counts()
 
 
-# In[20]:
+# In[39]:
 
 
 ## Training a classifier 
@@ -333,9 +315,9 @@ data_modif.stroke.value_counts()
 # ##Training a classifier
 # 
 
-# ### Supervised learning approach (Support Vector Machines)
+# ### Support Vector Machine
 
-# In[21]:
+# In[60]:
 
 
 # Input values put in a matrix, there are 84 features
@@ -348,7 +330,7 @@ print("Features of the first sample: ", X[0])
 print("Class of the first sample: ", y[0])
 
 
-# In[22]:
+# In[61]:
 
 
 # Let's split data into test and train sets
@@ -360,7 +342,7 @@ print("Size of train features matrix: ",X_train.shape, ", Size of train output v
 print("Size of test features matrix: ",X_test.shape, ", Size of test output vector: ",y_test.shape)
 
 
-# In[23]:
+# In[62]:
 
 
 # Define and train the model
@@ -375,65 +357,32 @@ clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 
 
-# In[24]:
+# ###Neural Networks
 
-
-# Test the model
-# Let's check for each sample in the test set if prediction matches the true class information
-y_test == y_pred
-
-
-# In[25]:
-
-
-# Data is balanced, so you can use accuracy as a measure:
-print("accuracy: ", np.sum(y_test == y_pred)/len(y_test))
-
-
-# In[26]:
-
-
-# Print the confusion matrix
-from sklearn.metrics import confusion_matrix
-import seaborn as sns
-
-classes = np.unique(data_modif.stroke)
-conf_mat = pd.DataFrame(confusion_matrix(y_test, y_pred), columns = classes, index = classes)
-conf_mat.index.name = 'Actual'
-conf_mat.columns.name = 'Predicted'
-plt.figure(figsize = (7, 5))
-sns.set(font_scale = 1.2)
-sns.heatmap(conf_mat, cmap = "Blues", annot_kws = {"size": 12}, annot = True);
-
-
-# ### Unsupervised learning approach (Neural Network)
-
-# In[27]:
+# In[63]:
 
 
 from sklearn.preprocessing import StandardScaler
 
-# Let's start by splitting our data 
-X_train_val, X_test, y_train_val, y_test = train_test_split(X, y, test_size = 0.20, random_state = 1)
-
-# ..and apply normalisation
-scaler = StandardScaler().fit(X_train_val)
-norm_x_train_val = scaler.transform(X_train_val)
-norm_x_test = scaler.transform(X_test)
+# Let's start by applying normalisation
+scaler = StandardScaler().fit(X_train)
+norm_x_train = scaler.transform(X_train)
+scalertest = StandardScaler().fit(X_train)
+norm_x_test = scalertest.transform(X_test)
 
 
-# In[28]:
+# In[64]:
 
 
 from sklearn.preprocessing import OneHotEncoder
 onehot_encoder = OneHotEncoder(sparse=False)
-y_train_val_onehot = onehot_encoder.fit_transform(y_train_val.reshape(len(y_train_val), 1))
+y_train_onehot = onehot_encoder.fit_transform(y_train.reshape(len(y_train), 1))
 y_test_onehot = onehot_encoder.fit_transform(y_test.reshape(len(y_test), 1))
-print("One-hot encoded y_train_val shape = ", y_train_val_onehot.shape)
+print("One-hot encoded y_train shape = ", y_train_onehot.shape)
 print("One-hot encoded y_test shape = ", y_test_onehot.shape)
 
 
-# In[29]:
+# In[65]:
 
 
 from keras.models import Sequential
@@ -464,23 +413,61 @@ def compose_model(num_features):
     
     return model
 
-model = compose_model(X_train_val.shape[1])
+model = compose_model(X_train.shape[1])
 
 
-# In[30]:
+# In[66]:
 
 
 model.summary()  # Plot summary of the model
 
 
-# In[31]:
+# In[67]:
 
 
 model.compile(optimizer = 'Adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
-summary = model.fit(X_train_val, y_train_val_onehot, batch_size = 50, epochs = 250, validation_split=0.2, verbose=0)
+summary = model.fit(X_train, y_train_onehot, batch_size = 50, epochs = 250, validation_split=0.2, verbose=0)
 
 
-# In[32]:
+# ## Evaluation
+# To test the model we compare the predictions with the ground truth labels on the examples we set aside for the testing. To that extent, we compute the accuracy of the model on the test set. 
+
+# ### Support Vector Machine
+
+# In[68]:
+
+
+# Test the model
+# Let's check for each sample in the test set if prediction matches the true class information
+y_test == y_pred
+
+
+# In[69]:
+
+
+# Data is balanced, so you can use accuracy as a measure:
+print("accuracy: ", np.sum(y_test == y_pred)/len(y_test))
+
+
+# In[70]:
+
+
+# Print the confusion matrix
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+
+classes = np.unique(data_modif.stroke)
+conf_mat = pd.DataFrame(confusion_matrix(y_test, y_pred), columns = classes, index = classes)
+conf_mat.index.name = 'Actual'
+conf_mat.columns.name = 'Predicted'
+plt.figure(figsize = (7, 5))
+sns.set(font_scale = 1.2)
+sns.heatmap(conf_mat, cmap = "Blues", annot_kws = {"size": 12}, annot = True);
+
+
+# ###Neural Networks
+
+# In[71]:
 
 
 score = model.evaluate(X_test, y_test_onehot, verbose = 0)
@@ -488,7 +475,7 @@ print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
 
-# In[33]:
+# In[72]:
 
 
 # summarize history for accuracy

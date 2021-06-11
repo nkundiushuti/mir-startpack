@@ -5,6 +5,7 @@
     - file: inst_clas/methods
     - file: inst_clas/Mridangam_dataset
     - file: inst_clas/Feature_extraction_classification
+    - file: inst_clas/End_to_end_classification
 
 - part: Resources
   chapters:
